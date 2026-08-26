@@ -1,0 +1,122 @@
+반응형 웹
+UX
+UI
+
+bootstrap grid system
+12개의 컬럼으로 구성된 시스템
+12개로 나눈 이유는 적당한 값 중 약수가 가장 많아서 나누기 좋음
+
+container
+column: 실제 컨텐츠에 컬럼을 3개 줄 수도 있고 4개 줄 수도 있고 그럼
+row:
+행을 채워야 함
+행 속에 12개의 컬럼이 있는 것
+gutter 컬럼과 컬럼 사이 거리
+
+container, row 등 부트스트랩에서 이름이 정해져 있음
+
+
+실제 컬럼이 늘어나는 건 아님
+그 안에서 거리를 두기 위해 컨텐츠 영역을 줄이는 것
+컬럼의 너비가 짧아진 것은 좌우에  padding 영역을 준 것 
+
+      <div class="col-4"> 숫자 명시: 4칸씩 배분
+
+      <div class="col-4">
+        <div class="box">col-4</div>
+      </div>
+      <div class="col-4">
+        <div class="box">col-4</div>
+      </div>
+      <div class="col-4">
+        <div class="box">col-4</div>
+
+
+      <div class="col-4">
+        <div class="box">col-4</div>
+      </div>
+      <div class="col-5">  ---- 5칸 주면 밀려나버림
+        <div class="box">col-4</div> 
+      </div>
+      <div class="col-4">
+        <div class="box">col-4</div>
+
+
+
+
+    <div class="row">
+      <div class="col-2">
+        <div class="box">col-2</div>
+      </div>
+      <div class="col-8">
+        <div class="box">col-8</div>
+      </div>
+      <div class="col-2">
+        <div class="box">col-2</div>
+      </div>
+
+12를 2:8:2로 나눈 것
+창 크기가 변함에 따라 길어졌다가 짧아졌다가 함
+
+하나의 횡 안에 어떤 컨텐츠를 넣을지 
+row에 무엇을 어떻게 넣을지
+
+중첩Nesting
+사이드 바 안에서 또 컨텐츠를 나누기
+
+
+gutters
+좌우는 실제 컬럼이 밀어내지 못함. 밀어내면 12칸으로 나눈 container가 터지기 때문.
+그래서 컬럼에 padding을 줌. 일종의 눈속임. 가로의 길이는 정해져있으니.
+padding은 컨텐츠와 boarder 사이의 거리
+padding이 늘어나면 컨텐츠가 줄어든다
+
+위아래는 margin으로 밀어냄
+gx-0 ~ gx-5로 거터 크기 설정 가능
+거터는 행한테 줌
+row gx-0
+
+grid system fo responsive web
+칸수를 화면 크기마다 다르게 나누는 것
+
+웹의 크기마다 어떤 기준을 토대로 화면을 바꿔야 함
+그 기준을 6개의 breakpoint로 만듦
+xs sm md lg xl xxl
+화면 너비를 기준으로 분기점을 6개 제공
+0~575px은 xs
+576부터 767px까지가 sm
+
+col -sm -6
+sm인 동안은 6칸
+
+col -xxl -3
+xxl인 동안은 3칸
+
+다음 분기점을 만나기 전까진 계속 칸수를 유지
+
+
+xs 12칸씩
+sm 6칸씩
+md 2 / 8 /2
+lg 4칸씩
+xl 6칸씩
+
+
+컨테이너 영억도 breakpotins가 있음
+
+
+
+일반적인 그리드 : 몇 칸을 차지하라
+
+그리드 카드: 카드 갯수
+row row-cols-1 : 보여지는 카드가 1개
+
+
+
+
+
+
+
+
+
+

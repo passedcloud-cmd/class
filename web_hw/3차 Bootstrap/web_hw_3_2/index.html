@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .outer-box {
+      /* display: flex;
+      justify-content: space-between; */
+      /* item1, item2와는 직접적인 부모-자식 관계가 아니므로
+      여기 있던 display: flex / justify-content는 의미가 없음 -> 제거 */
+      border: black 1px dotted ;
+      height: 200px;
+      width: 600px;
+    }
+
+    .inner-box {
+      /* item1, item2(.box)의 실제 부모이므로,
+      space-between을 적용하려면 flex 컨테이너 역할을 이 요소가 해야 함 */
+      display: flex;
+      justify-content: space-between;
+      border: red 1px solid;
+      height: 200px;
+      width: 300px;
+    }
+
+    .box {
+      height: 100px;
+      width: 100px;
+      background-color: skyblue;
+    }
+  </style>
+</head>
+<body>
+  <div class="outer-box">
+    <div class="inner-box">
+      <div class="box">item1</div>
+      <div class="box">item2</div>
+    </div>
+  </div>
+</body>
+</html>

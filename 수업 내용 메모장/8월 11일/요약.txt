@@ -1,0 +1,46 @@
+토큰화: 문장을 쪼갬
+인코딩: 쪼갠 조각을 정수 ID로 바꿈
+임베딩: 의미가 담긴 좌표 값 벡터로 변환. 딥러닝 모델의 입력. 좌표면 비슷한 단어끼리 거리를 잴 수 있음 
+정적 임베딩: 단어 하나에 벡터 하나 고정. 동의어 등 맥락 고려 X. 모델의 입구에 들어가는 쪽이라 문맥 없음
+문맥 임베딩: 문맥마다 다른 벡터가 나옴. 모델의 출구에서 나와서 문맥 반영됨. 
+임베딩은 모델이 수행함 - 토큰화에 사용한 단어 사전(토크나이저)와 짝이 맞는 모델을 사용해야 함
+
+허깅페이스: 라이브러리. 모델, 토크나이저, 트랜스포머 제공
+토크나이저: 문장을 토큰으로 나누고 정수 ID로 변환하는 도구
+OOV(out-of-vocabulary) : 단어 사전에 없는 단어. 이해 못하고 [UNK]으로 처리
+서브 워드: 더 작은 의미 단위. ##세요
+
+from transformers import AutoTokenizer
+tokenizer = AutoTokenizer.from_pretrained("Klue/bert-base")
+Klue/bert-base : 한국어 처리용 모델
+AutoTokenizer: 모델 이름을 알려주면 알맞는 단어 사전(토크나이저)를 찾아주는 클래스
+
+from transformers import AutoModel
+model = AutoModel.from_pretrained("Klue/bert-base")
+AutoModel : 모델 이름을 알려주면 해당 모델 본체를 찾아주는 클래스
+
+
+text = "안녕"
+encoded_input = tokenizer(text) #문자를 인코딩. 인코딩 결과는 딕셔너리
+# print 해보면 input_ids가 나옴. 각 토큰에 해당하는 정수ID 리스트.
+tokens = tokenizer.convert_ids_to_tokens(encoded_input['input_ids']) #정수 ID에서 토큰으로.
+
+#임베딩 벡터 추출
+encoded_input = tokenizer(text, return_tensors='pt') #인코딩
+
+with torch.no_grad(): #미분 없이 만들라
+	output = model(**encoded_input) #인코딩된 딕셔너리를 모델에 전달
+
+embedding_vector = output.last_hidden_state #최종 임베딩 벡터 추출 #last_hidden_state는 모델 마지막 층에서 나온 출력
+
+print(f'임베딩 벡터 shape: {embedding_vector.shape}')
+
+
+
+
+
+
+
+
+
+

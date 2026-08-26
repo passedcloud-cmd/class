@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <style>
+    .box {
+      border: 1px solid black;
+      background-color: lightblue;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <h2 class="text-center">Basic</h2>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="box">col</div>
+      </div>
+      <div class="col">
+        <div class="box">col</div>
+      </div>
+      <div class="col">
+        <div class="box">col</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-4">
+        <div class="box">col-4</div>
+      </div>
+      <div class="col-4">
+        <div class="box">col-4</div>
+      </div>
+      <div class="col-4">
+        <div class="box">col-4</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-2">
+        <div class="box">col-2</div>
+      </div>
+      <div class="col-8">
+        <div class="box">col-8</div>
+      </div>
+      <div class="col-2">
+        <div class="box">col-2</div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <h2 class="text-center">Nesting</h2>
+  <div class="container">
+    <!-- 여기서부터 -->
+    <div class="row"> 
+      <!-- 여기 박스 1개 -->
+      <div class="box col-4">
+        <div>col-4</div>
+      </div>
+      <!-- 여기 박스 1개 -->
+
+      <!-- 여기 박스 두 번째 -->
+      <div class="box col-8"> <!-- 여기 box는 스타일링 -->
+        <!-- 여기에 container를 써도 되긴 하지만 레이아웃 구성에 맞지 않아서 안 씀. 쓴다면 영역이 줄어들겠지. 거터?가 생겨서 -->
+        <!-- class='row'를 줬으니 새로운 행이 생김 -->
+        <div class="row">
+          <div class="col-6">
+            <div class="box">col-6</div>
+          </div>
+          <div class="col-6">
+            <div class="box">col-6</div>
+          </div>
+          <div class="col-6">
+            <div class="box">col-6</div>
+          </div>
+          <div class="col-6">
+            <div class="box">col-6</div>
+            <!-- 행 4개에 6칸씩 차지하도록 함. 한 줄에 2개씩 두 줄이 됨 -->
+          </div>
+        </div>
+      </div>
+      <!-- 여기 박스 두 번째 -->
+    </div>
+    <!-- 여기까지가 하나의 row 행인 것  -->
+  </div>
+
+  <hr>
+
+  <h2 class="text-center">Offset</h2>
+  <div class="container">
+    <div class="row">
+      <div class="col-4">
+        <div class="box">col-4</div>
+      </div>
+      <div class="col-4 offset-4">
+        <div class="box">col-4 offset-4</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-3 offset-3">
+        <!-- 오프셋(상쇄)을 주고 나서 컬럼 4개 차지하라. 작성 순서는 상관 없음  -->
+        <div class="box">col-3 offset-3</div>
+      </div>
+      <div class="col-3 offset-3">
+        <div class="box">col-3 offset-3</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 offset-3">
+        <div class="box">col-6 offset-3</div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <h2 class="text-center">Gutters(gx-0)</h2>
+  <div class="container">
+    <div class="row gx-0">
+      <!-- 거터 좌우의 값을 0으로 해 -->
+      <div class="col-6">
+        <div class="box">col</div>
+      </div>
+      <div class="col-6">
+        <div class="box">col</div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <h2 class="text-center">Gutters(gy-5)</h2>
+  <div class="container">
+    <div class="row gy-5">
+      <!-- 위 아래 margin을 주자 -->
+      <div class="col-6">
+        <div class="box">col</div>
+      </div>
+      <div class="col-6">
+        <div class="box">col</div>
+      </div>
+      <div class="col-6">
+        <div class="box">col</div>
+      </div>
+      <div class="col-6">
+        <div class="box">col</div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <h2 class="text-center">Gutters(g-5)</h2>
+  <div class="container">
+    <div class="row g-5">
+      <!-- g-5는 네 방향 모두에 여백이 보이도록 -->
+      <div class="col-6">
+        <div class="box">col</div>
+      </div>
+      <div class="col-6">
+        <div class="box">col</div>
+      </div>
+      <div class="col-6">
+        <div class="box">col</div>
+      </div>
+      <div class="col-6">
+        <div class="box">col</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

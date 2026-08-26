@@ -1,0 +1,249 @@
+Vim 모드 켜졌을 때
+저장 안 하고 나가기 Esc → :q! → Enter
+메시지 쓰고 저장하며 나가기	i → 메시지 입력 → Esc → :wq → Enter
+
+len()함수는 딕셔너리에도 사용 가능. key-value 쌍 개수를 알려줌
+
+----------------------------------------------------------------------------------------------------------
+과제 2차. 파이썬 기초 문법2
+list.copy()는 얕은 복사(shallow copy)
+복사본임에도 중첩된 리스트는 공유가 됨
+
+깊은 복사 쓰는 법
+import copy
+backup_catalog = copy.deepcopy(catalog)
+catalog[3][1] = '내 삶의 변화'
+→ backup_catalog만 변함
+
+식별 연산자(is)로 backup_catalog와 catalog 비교
+print(catalog is backup_catalog)          # False (서로 다른 객체)
+print(catalog[3] is backup_catalog[3])    # False (깊은 복사라 안쪽 리스트도 별개)
+print(catalog[3][1] == backup_catalog[3][1])  # 값 비교: 다름 (수정됐으므로)
+
+----------------------------------------------------------------------------------------------------------
+8차 - 과제 - 사용자 정보 클래스 예외 처리 Lv4
+
+주의1)
+input()은 사용자가 그냥 엔터만 쳐도 빈 문자열("")을 반환할 뿐, TypeError를 발생시키지 않습니다.
+"이름이 없거나 공백이면"이라는 조건은 예외 처리가 아니라 직접 검사해야 합니다.
+
+if not self.name.strip():
+    return None
+→ self.name.의 앞뒤 공백을 제거. 
+만약 입력값이 공백이거나 스페이스바만 눌렀다면 빈 문자열 ""가 되어 False
+이걸 not으로 뒤집으면 True.
+
+주의2)
+input()으로 받은 값은 항상 문자열이라 ValueError가 절대 발생하지 않습니다.
+숫자인지 검사하려면 int(self.age)처럼 변환을 시도해야 예외가 발생할 수 있어요.
+ValueError를 "처리"하려면 try-except로 변환해야 함
+
+try:
+    age_int = int(self.age)
+except ValueError:
+    print('나이는 숫자로 입력해야 합니다.')
+    return False
+
+주의3)
+파이썬에서 딕셔너리에 없는 키를 []로 조회하면 KeyError가 발생합니다.
+self.user_data가 비어있는 딕셔너리({})인지 아닌지로 판단하는 게 더 정확합니다.
+
+주의4) 큰따옴표 내부는 작은 따옴표로 사용할 것.
+print(f"사용자 정보: \n이름: {self.user_data['이름']}\n나이: {self.user_data['나이']}")
+
+
+----------------------------------------------------------------------------------------------------------
+시험 대비 01_데이터_및_제어문: 7번 a가 싫어
+remove(value) 함수는 리스트에서 지정한 값을 찾아 첫 번째로 나오는 요소를 삭제하는 메서드
+list.remove(value)
+삭제하려는 값이 리스트에 없으면 ValueError. 반환값 없음
+str은 list 형변환 가능
+list로 형변환한 str은 "".join(word)로 다시 str로 만들 수 있음
+
++pop은 리스트에서 특정 인덱스 값을 지우고 지운 값을 반환함
+list.pop(i)
+
+----------------------------------------------------------------------------------------------------------
+시험 대비 02_함수 practice 1: 1번 all() 구현 / 2번 any() 구현
+
+`all()`은 인자로 받는 iterable(range, list)의 모든 요소가 참이거나 비어있으면 True를 반환합니다. 
+my_all([]) #=> True
+my_all([1, 2, 5, '6']) #=> True
+my_all([[], 2, 5, '6']) #=> False
+
+`any()`는 인자로 받는 iterable(range, list)의 요소 중 하나라도 참이면 True를 반환하고, 비어있으면 False를 반환합니다. 
+my_any([1, 2, 5, '6']) #=> True
+my_any([[], 2, 5, '6']) #=> True
+my_any([0]) #=> False
+
+파이썬에서 False로 취급되는 것들, 나머지는 전부 True
+bool(0)        # False
+bool(0.0)      # False
+bool("")       # False
+bool([])       # False (빈 리스트)
+bool(())       # False (빈 튜플)
+bool({})       # False (빈 딕셔너리)
+bool(set())    # False (빈 집합)
+bool(None)     # False
+
+if 27:	27  |  27이 참으로 평가되는가  |   True
+bool(27) == True    |  bool(27)의 값이 True와 같은가  |	True
+bool(27) is True   |  bool(27)이 진짜 True 객체인가  |	True (싱글턴이라서)
+27 is True	|  27이 True와 동일한 객체인가  |    False
+
+----------------------------------------------------------------------------------------------------------
+시험 대비 02_함수 practice 2: 1번 불쌍한 달팽이
+식을 세우는 게 문제임
+
+
+
+# 02_함수 practice 3: 회문 판별
+
+while len(word) == 1 or 0: → or 0이 뒤에 붙었는데, 0은 False값이라 아무 효과가 없음. 결국 len(word) == 1과 똑같이 작동합니다.
+
+→ len(word) <= 1로 적어야 한다
+
+
+재귀함수는 함수를 반복할 수록 
+def is_pal_recursive(word):
+    if word[0] == word[-1]:
+        word = word[1:-1]
+        is_pal_recursive(word)
+
+word[1:-1]는 처음 글자와 마지막 글자를 제외한 것
+인덱스와 달리 슬라이싱은 빈 리스트에 적용해도 에러가 나오지 않음.
+list = [] 이라면 list[0]은 IndexError. 빈 리스트라 0번째 요소가 없기 때문.
+
+
+def is_pal_recursive(word):
+    if len(word) <= 1:
+        result = True
+        return result
+    if word[0] == word[-1]:
+        word = word[1:-1]
+        return is_pal_recursive(word)
+    else:
+        result = False
+    return result
+
+----------------------------------------------------------------------------------------------------------
+# 03_데이터구조_및_활용 practice 1: 1번 복잡한 리스트의 합
+
+sum() 함수는 반복 가능한 객체의 합을 더함. 리스트나 튜플, range
+
+----------------------------------------------------------------------------------------------------------
+# 03_데이터구조_및_활용 practice 2: 1번 모든 위치
+find 메서드
+str 자료형에서만 사용 가능
+text.find(찾는 값, 시작점,  끝점)
+찾는 값이 없으면 -1 반환
+
+index
+리스트, 튜플, 문자열 등에서 사용 가능
+값.index(찾을값, 시작점, 끝점)
+찾는 값이 없으면 에러
+
+
+enumerate(iterable, start=0)
+리스트 같은 순서가 있는 자료형을 반복할 때 인덱스(순번)와 값을 동시에 제공
+for idx, char in enumerate(text):
+
+map(function, iterable)
+반복 가능한 객체(리스트, 튜플 등)의 모든 요소에 지정된 함수를 일괄 적용해 주는 내장 함수
+반환 값은 이터레이터(map 객체)이므로 확인하려면 list() 등으로 변환이 필요
+
+.split()
+특정 구분자를 기준으로 문자열을 쪼개서 리스트(List) 형태로 돌려주는 함수
+아무 값도 없으면 공백을 기준으로 나눔
+"a b c".split() 결과는 ['a', 'b', 'c']
+
+'구분자'.join(각 요소가 문자열인 리스트)
+리스트나 튜플 같은 반복 가능한(iterable) 객체의 여러 문자열을 하나로 합쳐서 새로운 문자열로 바꿔주는 기능
+인자로 넣는 리스트의 각 요소가 문자열이어야 함.
+result = ' '.join(map(str, total_list))
+
+
+.lower(): 문자열의 모든 대문자를 소문자로 바꿉니다.
+.upper() 메서드는 문자열 안의 모든 소문자를 대문자로 바꿔주는 기능
+
+
+----------------------------------------------------------------------------------------------------------
+
+# 03_데이터구조_및_활용 practice 4: 3번 문자열 탐색
+count_same = 0  ← 전역 변수
+def start_end(words):
+    for i in words:
+        if len(i) >= 3 and i[0] == i[-1]:
+            count_same += 1  ← count_same은 지역 변수. 하지만 함수 내에 정의된 count_same 지역 변수가 없어서 오류남
+    result = count_same
+    return result
+
+수정본
+count_same = 0  ← 전역 변수
+def start_end(words):
+    global count_same ← 이 변수는 지역 변수가 아니라 바깥의 전역 변수를 쓸 거야
+    for i in words:
+        if len(i) >= 3 and i[0] == i[-1]:
+            count_same += 1  ← count_same은 지역 변수. 하지만 함수 내에 정의된 count_same 지역 변수가 없어서 오류남
+    result = count_same
+    return result
+
+
+----------------------------------------------------------------------------------------------------------
+# 03_데이터구조_및_활용 practice 4: 5번 딕셔너리 뒤집기
+리스트에 +를 쓰면 두 리스트를 이어 붙인 새 리스트가 만들어져요.
+[1, 2] + [3]  # → [1, 2, 3]
+[] + ['a']    # → ['a']
+
+
+for key, item in my_dict.items():
+
+딕셔너리의 특정 키에 매칭되는 값이 리스트라면, 리스트 메서드인 .append()를 사용할 수 있습니다.
+my_dict = {'hobbies': []}
+my_dict['hobbies'].append('독서')
+ # {'hobbies': ['독서', '영화감상']}
+
+.get() 메서드는 딕셔너리(Dictionary)에서 특정 키(Key)에 해당하는 값을 안전하게 가져올 때 사용
+키가 없을 때 None이나 지정한 기본값(Default)을 반환
+mydict.get('key', '기본값')
+
+
+
+----------------------------------------------------------------------------------------------------------
+min 함수
+min(iterable, *[, key, default])
+min(arg1, arg2, *args, *[, key])
+빈 시퀀스를 처리할 때 에러가 나옴. 에러를 방지하기 위한 default 값 설정 가능
+리스트나 딕셔너리에서 key를 기준으로 두고 최솟값 찾기 가능
+words = ['apple', 'banana', 'cherry', 'date']
+print(min(words, key=len))  # 가장 짧은 단어 출력: 'date'
+
+scores = {'math': 80, 'english': 95, 'science': 75}
+lowest_subject = min(scores, key=lambda k: scores[k])
+print(lowest_subject)  # 출력: 'science'
+
+empty_list = []
+print(min(empty_list, default="리스트가 비어있습니다.")) 
+
+
+
+----------------------------------------------------------------------------------------------------------
+월멸 평가 예시 문제 practice04
+
+"12345"[-1]        # → '5' (문자열!)
+type("12345"[-1])  # → <class 'str'>
+type(data_dir['id'][-1]) == int는 **id가 뭐가 됐든 항상 False**가 나올 가능성이 높아.
+
+isdigit()은 문자열이 숫자로만 이루어져 있는지 확인하는 메서드. 제곱 등 특수 첨자 숫자도 포함
+isdecimal(): 가장 엄격하게 0~9 사이의 일반적인 아라비아 숫자만 True로 인정합니다.
+
+
+----------------------------------------------------------------------------------------------------------
+sort와 sorted
+list.sort(): 원본 리스트를 직접 변경하며, 반환값은 None입니다. 원본 자체를 변경. 리스트 객체에서만 사용할 수 있습니다.
+내림차순: list.sort(reverse=True)
+조건 지정 (key): 글자 길이 등 특정 조건을 기준으로 정렬할 때 사용합니다 (예: list.sort(key=len))
+
+sorted(iterable): 원본을 유지하고 정렬된 새로운 리스트를 반환합니다. 리스트 외에도 튜플, 문자열 등 다양한 객체에 사용할 수 있습니다.
+내림차순: sorted(list, reverse=True)
+

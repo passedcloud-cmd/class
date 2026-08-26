@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    /* 자손 결합자 (Descendant Combinator) - 공백으로 표시
+       div 안에 있는 모든 p 태그를 선택 (직계 자식이든, 손자든, 증손자든 깊이 상관없이 전부) */
+    div p {
+      color: blue;
+    }
+    /* 자식 결합자 (Child Combinator) - > 로 표시
+       div의 "바로 아래" 자식인 p 태그만 선택 (한 단계 아래만 해당, 손자는 선택 안 됨) */
+    div > p {
+      color: crimson;
+    }
+
+    /* 두 선택자는 우선순위(specificity)가 동일
+       CSS에서는 나중에 적힌 규칙이 이기므로
+       div의 직계 자식 p는 나중에 나온 'div > p' 규칙(crimson)이 적용되고
+       손자 이하의 p는 'div > p'에 해당하지 않으므로 앞의 'div p' 규칙(blue)만 남음 */
+  </style>
+</head>
+<body>
+  <div>
+    <!-- ① div의 직계 자식(자식 결합자 O, 자손 결합자도 O)
+         -> 두 규칙 모두 해당되지만 나중에 적힌 div > p(crimson)가 이김 -->
+    <p> 자식</p>
+
+    <section>
+      <!-- ② 바깥 div 입장에서는 자식이 아니라 "자식의 자식(손자)"
+           -> div > p(자식 결합자)에는 해당되지 않고, div p(자손 결합자)에만 해당
+           -> blue로 보임 -->
+      <p> 손자</p>
+    </section>
+
+    <!-- ③ 다시 바깥 div의 직계 자식으로 돌아온 p
+         -> ①번과 마찬가지로 div > p(crimson)가 적용 -->
+    <p>자식</p>
+  </div>
+</body>
+</html>

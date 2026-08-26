@@ -1,0 +1,113 @@
+https://lab.ssafy.com.s16.python
+
+feature/main (메인 화면 및 JSON 데이터 연동)
+- JSON 데이터 연동
+- 메인 화면
+- 공통 컴포넌트
+
+npm install
+npm run dev
+Ctrl + C
+
+git init
+git add .
+git commit -m "first commit"
+git branch -M main
+git remote add origin (GitHub에서 준 저장소 주소)
+git push -u origin main
+
+git clone (GitHub 저장소 주소)
+
+
+
+
+src/components/ 폴더에 이런 것들부터 만들면 좋아요:
+
+Header.vue (상단 메뉴바)
+Footer.vue (하단)
+Card.vue (게시글 카드처럼 반복되는 UI)
+Button.vue (필요하다면)
+
+
+########### 수정 한 거 ###################################
+src에 data 폴더 추가 - 서울_축제공연행사.json 생성
+src -views에서 HomeView.vue 수정
+App.vue에서 ChatbotWidget.vue 보이게 설정한 걸 삭제. HomeView.vue에서 보이도록 함.
+챗봇이 보이도록 했더니 API key가 없어서 오류 - 홈페이지 전체 다운되는 현상.
+	ㄴ 일단은 챗봇이 나오는 부분은 주석처리함. API키를 넣어야 작동할 듯.
+	HomeView.vue에서
+	5 번째 줄 import ChatbotWidget from '@/components/ChatbotWidget.vue' 
+	107 번째 줄 <!-- <ChatbotWidget /> --> 
+	App.vue에서
+	8 번째 줄 <!-- <ChatbotWidget /> -->
+(feature/home-integration)이라는 branch 생성
+
++ 7월 16일
+assets/main.css 수정
+components/Footer.vue추가
+components/Header.vue 수정
+App.vue 수정
+
+##############################################################
+
+git add .
+git commit -m "메인 화면에 지도, 게시판, 축제 목록 통합"
+git push origin feature/home-integration
+
+앞으로를 위한 팁
+프로젝트 새로 받을 때마다 이렇게 시작하시면 편해요:
+bashgit clone (저장소 주소)
+cd 프로젝트폴더
+git checkout -b feature/본인이름-작업내용
+
+git remote add myrepo https://github.com/passedcloud-cmd/festival-community-myownpractice
+
+myrepo라는 내 개인 저장소 추가.
+git push myrepo feature/home-integration
+
+
+### 학원 가서 클론으로 받으면 ###
+1) cd 프로젝트폴더
+2) npm install
+(꼭 프로젝트 폴더와 같은 위치일 때 node_modules 폴더 생성됨. node_modules 폴더는 용량이 커서 보통 git에 올리지 않아요 (.gitignore에 포함되어 있을 거예요). )그래서 git clone으로 받은 폴더에는 node_modules가 없는 게 정상이고, npm install로 그 컴퓨터에서 새로 설치해줘야 합니다.
+3) # .env 파일 직접 생성 (VSCode에서)
+챗봇 API키 받아야 함
+4) npm run dev
+
+.env 파일은 git에 안 올라가 있다는 점 기억하기
+.env 파일(API 키)은 의도적으로 git에서 제외했었죠. 폴더를 삭제하면 .env 파일도 같이 사라지고, 이건 클론으로 절대 복구가 안 돼요. 삭제 전에 .env 파일 내용(API 키)을 어딘가에 따로 메모해두세요.
+
+*****************************************************************************************
+작업 끝나면 각각 알맞은 곳에 push
+bash
+git push teamrepo feature/home-integration   # 팀 저장소로
+git push origin feature/home-integration      # 개인 저장소로 (백업용)
+*****************************************************************************************
+
+
+
+README 잘 적기! 이 프로젝트를 처음 보는 사람이 혼자 실행해볼수 있어야 함.
+1. 프로젝트 한 줄 소개. 무엇을, 누그를 위해 만든 서비스인지 한 문장
+예) oo권역 익명 커뮤니티 + 지역정보 챗봇
+2. 데모/배포 링크
+배포 URL을 맨 위에 크게. 읽는 사람은 동작하는 화면을 봄.
+
+
+
+
+팀원B
+익명 게시판 CRUD
+localStorage
+게시글 검색 및 태그
+-----------------------
+팀원 C
+OpenAI 챗봇
+Leaflet 지도
+혼잡도 시각화
+
+
+
+
+
+
+지도와 날짜 실시간 연동

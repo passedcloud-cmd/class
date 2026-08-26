@@ -1,0 +1,77 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div>
+    <div>
+      <img src="profile.jpg" alt="Profile Image">
+      <p>Name</p>
+    </div>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci unde officiis ad nostrum. Laboriosam mollitia similique provident fuga tenetur saepe sit, amet eaque neque eius quaerat expedita ea illum veniam.</p>
+  </div>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .card {
+      width: 300px;           /* 카드 크기는 자유롭게 지정 */
+      border: 1px solid #000;
+      border-radius: 8px;
+      overflow: hidden;       /* 카드 밖으로 내용이 튀어나가지 않도록 */
+      font-family: sans-serif;
+    }
+
+    .image-wrap {
+      position: relative;     /* 이름(p)의 기준이 되는 부모 */
+      width: 100%;
+    }
+
+    .image-wrap img {
+      width: 100%;            /* 부모 너비와 같은 크기 */
+      display: block;
+      max-width: 100%;        /* 부모 범위를 벗어나지 않도록 */
+      object-fit: cover;
+    }
+
+    .image-wrap p {
+      position: absolute;     /* 이미지 위에 겹치도록 */
+      bottom: 0;               /* 부모 기준 아래쪽 0px */
+      left: 0;
+      width: 100%;
+      margin: 0;
+      padding: 8px 12px;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.4); /* 가독성을 위한 배경 */
+      box-sizing: border-box;
+    }
+
+    .card > p {
+      margin: 0;
+      padding: 12px;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="image-wrap">
+      <img src="profile.jpg" alt="Profile Image">
+      <p>Name</p>
+    </div>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci unde officiis ad nostrum. Laboriosam mollitia similique provident fuga tenetur saepe sit, amet eaque neque eius quaerat expedita ea illum veniam.</p>
+  </div>
+</body>
+</html>

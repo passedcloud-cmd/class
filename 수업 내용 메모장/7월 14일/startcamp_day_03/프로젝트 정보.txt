@@ -1,0 +1,80 @@
+커뮤니티 목적: 축제공연행사에 함께 갈 동행자를 구하거나 정보를 공유. 축제공연행사 주변 관광지 추천
+
+이용 타겟층: 싸피 서울 캠퍼스 학생
+
+선택 기능: 커뮤니티 게시판 추가 기능, 지도 시각화
+
+Must: 동행 모집 게시판 구현, AI 챗봇 구현
+
+Should:
+1) 지도 시각화 - 축제/공연 위치를 지도에서 보여주기. 
+축제/공연 + 관광지로 카테고리 2개 선택 시 서로 다른 색상 핀으로 지도 표시
+2) 세션 닉네임 부여
+3) 게시글에 태그 입력
+
+could:
+게시판 부가 기능: 조회수, 검색, 좋아요, 태그 필터.
+데이터 시각화 대시보드: 서울 
+
+
+
+지도에서 "주변"을 구현하긴 어려움
+외부 맵에서 제공하는 지역 기반 분류 기능을 써야 함
+
+작업 진행도를 공유할 수 있는 방법을 고려해야 함
+github로 공유하면서 협업할 수 있는 시나리오를 고려
+
+해당 프로젝트를 설명할 방향성. 키워드 필요
+
+오픈 채팅방 제거 후 다른 전체 흐름을 다시 잡기. 
+
+
+
+저는 feature/main (메인 화면 및 JSON 데이터 연동) 브런치를 담당하게 되었습니다.
+JSON 데이터 연동, 메인 화면, 공통 컴포넌트 기능을 개발해야 해요.
+구현 과정에서는 VS Code의 GitHub Copilot(ChatGPT)를 활용하여 컴포넌트 생성, API 연동, 오류 수정 등의 도움을 받으며 개발을 진행한다.
+
+npm create vue
+npm run dev
+
+1. 계획(단계)
+레포 생성/스캐폴딩: Vite로 Vue + JS 프로젝트 생성
+JSON 배치: public/data/data.json에 샘플 데이터 저장
+공통 컴포넌트: Header, Footer, DataCard 생성
+메인 화면: JSON을 fetch해서 카드 목록으로 렌더링
+테스트 및 실행
+
+
+2. 빠른 시작 명령 (터미널에서 실행)
+npm create vite@latest my-app -- --template vue
+cd my-app
+npm install
+npm run dev
+
+3. 샘플 JSON (public/data/data.json)
+
+4. 공통 컴포넌트 예제
+
+Header.vue (간단 설명: 상단 고정 제목)
+Footer.vue
+DataCard.vue
+
+5. 메인 화면 예시 (src/views/MainView.vue)
+
+
+
+
+festival_PJT 폴더 안에 있는 festival-community 폴더로 들어간 상태에서
+터미널에 'npm run dev'를 적으면 개발 서버가 켜집니다.
+http://localhost:5173/ 라는 주소가 나오는데 해당 주소로 들어가면 홈페이지가 나와요.
+그 홈페이지가 저희가 작업할 주소 같아요.
+개발 서버를 끌려면 터미널에 'Ctrl+c'를 입력하면 됩니다.
+
+① 공통 컴포넌트부터 시작하는 걸 추천해요
+이유: 메인 화면을 만들 때 바로 갖다 쓸 수 있어서 효율적이에요.
+src/components/ 폴더에 이런 것들부터 만들면 좋아요:
+
+Header.vue (상단 메뉴바)
+Footer.vue (하단)
+Card.vue (게시글 카드처럼 반복되는 UI)
+Button.vue (필요하다면)

@@ -1,0 +1,628 @@
+Merge: 2가지
+충돌이 있어날 수 있음
+
+Git Branch의 장점
+1. *독립*된 개발 환경을 형성하기 때문에 원본(master)에 대해 안전
+실제 개발은 원본(master)가 아니라 branch에서 작업함.
+원본엔 최종본만.
+
+상용 중인 서비스에 발생한 에러를 해결하려면?
+1. 브랜치를 통해 별도의 작업 공간을 만든다.
+2. 브랜치에서 에러가 발생한 버전을 이전 버전으로 되돌리거나 삭제한다.
+3. 브랜치는 완전하게 독립되어 있어서 작업 내용이 master브랜치에 아무런 영향을 미치지 못함.
+4. 이후 에러가 해결됐다면? 그 내용을 master브랜치에 반영 가능
+
+Master(main)브랜치의 의미 역할
+기본 브랜치(Default Branch): 가장 최신 버전. 배포 가능한 안정적인 코드.
+
+브랜치의 최종 목표는 병합
+
+git switch: HEAD(우리가 보고 있는 위치)
+git switch <다른 브랜치 이름>
+git switch -c <브랜치 이름> 
+ 둘 다 최근 커밋으로 이동
+
+<>는 안에 있는 값이 변할 수 있다는 표시딜 뿐 <>를 적으면 안됨
+
+git switch -c <브랜치 이름><commit ID> 
+과거 커밋이나 특정 커밋으로 이동
+
+master 커밋은 브랜치로부터 합쳐질 때 생김
+
+(13p)언제나 다음 커밋은 이전 커밋에 의존하고 있음.
+화살표는 그 의존성의 방향을 나타냄
+feature는 가운데 커밋에서 생성되었기에 화살표가 가운데를 향함
+
+switch하기 전에 woring directory 파일이 모두 버전 관리가 되어 있는지 확인해야 함.
+브런치를 이동하기 전에 완료된 작업은 버전을 찍고 나서 다른 브런치로 이동해야 함.
+커밋을 찍었다는 가정 하에 독립적인 것임.
+모든 파일이 git의 관리를 받는지 확인해야 함.
+커밋은 진행 방향과 화살표 표기 방향이 다른 이유: 종속 관계를 나타내기 때문.
+
+ git branch login 후 (login 브랜치 만듦)
+ git branch 하면 *로 우리가 어디 있는지 알려줌
+login은 아직 뻗어나가지 않음.
+수정사항도 없었고 커밋도 쌓지 않았기 때문.
+
+이제 head를 이동해야 함.
+$ git switch login
+하면 login으로 이동함. master 브런치로부터 다른 독립적. 
+
+git log --oneline 하면 login 이후 master에서 나아간 커밋은 볼 수 없음
+옵션을 붙여서 앞에 나간 모든 커밋을 볼 수 있음
+git log --oneline --all  :  모든 커밋 볼 수 있음
+
+login에서 변경 사항 만들고 커밋 쌓기
+
+git log --oneline --all --graph  : 브랜치가 어디서 갈라졌는지 볼 수 있음.
+
+git switch master 하면 다른 공간으로 이동
+
+working directory의 내용도 HEAD가 가리키는 브랜치의 최신 커밋을 보여줌
+
+
+병함 전 주의 사항!
+병합 전 내가 어디있는지 확인해야 함
+병합할려는 수신 브랜치를 작성하기 때문.
+그리고 수신 브랜치와 병합 브랜치 모두 최신 상태여야 함.
+
+Fast-forward merge
+Merge 과정 없이 단순히 브랜치의 포인터가 앞으로 이동.
+브랜치가 생기고 나서 master에 아무 변화가 없었다면,
+역설적으로 브랜치쪽이 최근 버전이 됨.
+그래서 master를 브랜치 쪽으로 끌어옴.
+
+master에서 git merge hotfix 하면 땡겨짐
+
+병합 완료된 hotfix 브랜치는 삭제
+git branch -d hotfix
+
+
+3-way merge
+병합 대상인 두 커밋의 공통 조상 커밋을 봄.
+그리고 새로운 버전이 생성되어 찍힘. ->머지 커밋이 생김
+
+git merge hotfix 치면
+VIM이 나옴
+
+VIM 모드 2가지
+1. 입력 모드(텍스트 입력)
+2. 명령 모드(저장, 종료...) : Shif + :
+	저장은 W, 종료는 Q
+
+git branch -d hotfix
+
+
+
+Merge Conflict
+병합하려는 두 브랜치가 "동일한 파일의 동일한 부분"에서 변경된 후 병합 시 충돌이 일어남.
+
+ git merge hotfix하면 충돌일어남
+충돌된 분 수정하면 (master|MERGING) 상태
+git add .
+git status
+git commit
+ -> 이름 설정 안 해도 ㄱㅊ
+	vsc가 임의로 merge brach라고 이름을 지어주는데 그대로 해도 됨
+		merge인 것을 명시하는 게 좋아서.
+
+
+
+첫번째 실습
+
+
+SSAFY@2□□PC044 MINGW64 C:/Users/SSAFY/Desktop/git-branch-practice
+$ git init
+Initialized empty Git repository in C:/Users/SSAFY/Desktop/git-branch-practice/.git/
+
+SSAFY@2□□PC044 MINGW64 C:/Users/SSAFY/Desktop/git-branch-practice (master)
+$ touch article.txt
+
+SSAFY@2□□PC044 MINGW64 C:/Users/SSAFY/Desktop/git-branch-practice (master)
+$ git add .
+
+SSAFY@2□□PC044 MINGW64 C:/Users/SSAFY/Desktop/git-branch-practice (master)
+$ git status
+On branch master
+
+No commits yet
+
+Changes to be committed:
+  (use "git rm --cached <file>..." to unstage)
+        new file:   article.txt
+
+
+SSAFY@2□□PC044 MINGW64 C:/Users/SSAFY/Desktop/git-branch-practice (master)
+$ git commit -m "master-1"
+[master (root-commit) a6085ce] master-1
+ 1 file changed, 1 insertion(+)
+ create mode 100644 article.txt
+
+SSAFY@2□□PC044 MINGW64 C:/Users/SSAFY/Desktop/git-branch-practice (master)
+$ git add .
+
+SSAFY@2□□PC044 MINGW64 C:/Users/SSAFY/Desktop/git-branch-practice (master)
+$ git commit -m "master-2"
+[master 730eb85] master-2
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+SSAFY@2□□PC044 MINGW64 C:/Users/SSAFY/Desktop/git-branch-practice (master)
+$ git status
+On branch master
+nothing to commit, working tree clean
+
+SSAFY@2□□PC044 MINGW64 C:/Users/SSAFY/Desktop/git-branch-practice (master)
+$ git log
+commit 730eb85f70e1e0491c333bf4354230bc6e93fb2e (HEAD -> master)
+Author: passed.cloud <passed.cloud@gmail.com>
+Date:   Tue Jul 14 11:03:52 2026 +0900
+
+    master-2
+
+commit a6085ce834ee1d035aed65b11f3e96606788c5ce
+Author: passed.cloud <passed.cloud@gmail.com>
+Date:   Tue Jul 14 11:03:19 2026 +0900
+
+    master-1
+
+SSAFY@2□□PC044 MINGW64 C:/Users/SSAFY/Desktop/git-branch-practice (master)
+$ git add .
+
+SSAFY@2□□PC044 MINGW64 C:/Users/SSAFY/Desktop/git-branch-practice (master)
+$ git status
+On branch master
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        modified:   article.txt
+
+
+SSAFY@2□□PC044 MINGW64 C:/Users/SSAFY/Desktop/git-branch-practice (master)
+$ git commit -m "master-3"
+[master ab3d467] master-3
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+SSAFY@2□□PC044 MINGW64 C:/Users/SSAFY/Desktop/git-branch-practice (master)
+$ git log --online
+fatal: unrecognized argument: --online
+
+SSAFY@2□□PC044 MINGW64 C:/Users/SSAFY/Desktop/git-branch-practice (master)
+$ git log --oneline
+ab3d467 (HEAD -> master) master-3
+730eb85 master-2
+a6085ce master-1
+
+SSAFY@2□□PC044 MINGW64 C:/Users/SSAFY/Desktop/git-branch-practice (master)
+$ git bracnch login
+git: 'bracnch' is not a git command. See 'git --help'.
+
+The most similar command is
+        branch
+
+SSAFY@2□□PC044 MINGW64 C:/Users/SSAFY/Desktop/git-branch-practice (master)
+$ git branch login
+
+SSAFY@2□□PC044 MINGW64 C:/Users/SSAFY/Desktop/git-branch-practice (master)
+$ git branch
+  login
+* master
+
+SSAFY@2□□PC044 MINGW64 C:/Users/SSAFY/Desktop/git-branch-practice (master)
+$ git log
+commit ab3d467cb99f8e4301a5090f02a9ae1ac7e584b0 (HEAD -> master, login)
+Author: passed.cloud <passed.cloud@gmail.com>
+Date:   Tue Jul 14 11:04:21 2026 +0900
+
+    master-3
+
+commit 730eb85f70e1e0491c333bf4354230bc6e93fb2e
+Author: passed.cloud <passed.cloud@gmail.com>
+Date:   Tue Jul 14 11:03:52 2026 +0900
+
+    master-2
+
+commit a6085ce834ee1d035aed65b11f3e96606788c5ce
+Author: passed.cloud <passed.cloud@gmail.com>
+Date:   Tue Jul 14 11:03:19 2026 +0900
+
+    master-1
+
+SSAFY@2□□PC044 MINGW64 C:/Users/SSAFY/Desktop/git-branch-practice (master)
+$ git log --oneline
+ab3d467 (HEAD -> master, login) master-3
+730eb85 master-2
+a6085ce master-1
+
+SSAFY@2□□PC044 MINGW64 C:/Users/SSAFY/Desktop/git-branch-practice (master)
+$ git add .
+
+SSAFY@2□□PC044 MINGW64 C:/Users/SSAFY/Desktop/git-branch-practice (master)
+$ git commit -m"master-4"
+[master 22742e7] master-4
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+SSAFY@2□□PC044 MINGW64 C:/Users/SSAFY/Desktop/git-branch-practice (master)
+$ git log --oneline
+22742e7 (HEAD -> master) master-4
+ab3d467 (login) master-3
+730eb85 master-2
+a6085ce master-1
+
+SSAFY@2□□PC044 MINGW64 C:/Users/SSAFY/Desktop/git-branch-practice (master)
+$ git switch login
+Switched to branch 'login'
+
+SSAFY@2□□PC044 MINGW64 C:/Users/SSAFY/Desktop/git-branch-practice (login)
+$ git log --oneline
+ab3d467 (HEAD -> login) master-3
+730eb85 master-2
+a6085ce master-1
+
+SSAFY@2□□PC044 MINGW64 C:/Users/SSAFY/Desktop/git-branch-practice (login)
+$ git log --oneline --all
+22742e7 (master) master-4
+ab3d467 (HEAD -> login) master-3
+730eb85 master-2
+a6085ce master-1
+
+SSAFY@2□□PC044 MINGW64 C:/Users/SSAFY/Desktop/git-branch-practice (login)
+$ touch test_login.txt
+
+SSAFY@2□□PC044 MINGW64 C:/Users/SSAFY/Desktop/git-branch-practice (login)
+$ git add .
+
+SSAFY@2□□PC044 MINGW64 C:/Users/SSAFY/Desktop/git-branch-practice (login)
+$ git status
+On branch login
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        modified:   article.txt
+        new file:   test_login.txt
+
+
+SSAFY@2□□PC044 MINGW64 C:/Users/SSAFY/Desktop/git-branch-practice (login)
+$ git commit -m "login-1"
+[login 64309d3] login-1
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+ create mode 100644 test_login.txt
+
+SSAFY@2□□PC044 MINGW64 C:/Users/SSAFY/Desktop/git-branch-practice (login)
+$ git log --oneline --all
+64309d3 (HEAD -> login) login-1
+22742e7 (master) master-4
+ab3d467 master-3
+730eb85 master-2
+a6085ce master-1
+
+SSAFY@2□□PC044 MINGW64 C:/Users/SSAFY/Desktop/git-branch-practice (login)
+$ git log --oneline --all --graph
+* 64309d3 (HEAD -> login) login-1
+| * 22742e7 (master) master-4
+|/  
+* ab3d467 master-3
+* 730eb85 master-2
+* a6085ce master-1
+
+SSAFY@2□□PC044 MINGW64 C:/Users/SSAFY/Desktop/git-branch-practice (login)
+$ git swtich master
+git: 'swtich' is not a git command. See 'git --help'.
+
+The most similar command is
+        switch
+
+SSAFY@2□□PC044 MINGW64 C:/Users/SSAFY/Desktop/git-branch-practice (login)
+$ git switch master
+Switched to branch 'master'
+
+SSAFY@2□□PC044 MINGW64 C:/Users/SSAFY/Desktop/git-branch-practice (master)
+$ git switch login
+Switched to branch 'login'
+
+SSAFY@2□□PC044 MINGW64 C:/Users/SSAFY/Desktop/git-branch-practice (login)
+$ git switch login
+Already on 'login'
+
+SSAFY@2□□PC044 MINGW64 C:/Users/SSAFY/Desktop/git-branch-practice (login)
+$ git switch master
+Switched to branch 'master'
+
+SSAFY@2□□PC044 MINGW64 C:/Users/SSAFY/Desktop/git-branch-practice (master)
+$ git log --oneline --all
+64309d3 (login) login-1
+22742e7 (HEAD -> master) master-4
+ab3d467 master-3
+730eb85 master-2
+a6085ce master-1
+
+SSAFY@2□□PC044 MINGW64 C:/Users/SSAFY/Desktop/git-branch-practice (master)
+$ 
+
+
+
+
+
+
+
+
+두 번째 실습
+
+SSAFY@2□□PC044 MINGW64 ~/Desktop/16기_AI온보딩_3일차_실습코드_Git_Branch/02-fast-forward-practice (master)
+$ git log --oneline
+95d8658 (HEAD -> master) c2
+d33fd57 c1
+
+SSAFY@2□□PC044 MINGW64 ~/Desktop/16기_AI온보딩_3일차_실습코드_Git_Branch/02-fast-forward-practice (master)
+$ git branch hotfix
+
+SSAFY@2□□PC044 MINGW64 ~/Desktop/16기_AI온보딩_3일차_실습코드_Git_Branch/02-fast-forward-practice (master)
+$ git switch hotfix
+Switched to branch 'hotfix'
+
+SSAFY@2□□PC044 MINGW64 ~/Desktop/16기_AI온보딩_3일차_실습코드_Git_Branch/02-fast-forward-practice (hotfix)
+$ git status
+On branch hotfix
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   article.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+SSAFY@2□□PC044 MINGW64 ~/Desktop/16기_AI온보딩_3일차_실습코드_Git_Branch/02-fast-forward-practice (hotfix)
+$ git add .
+
+SSAFY@2□□PC044 MINGW64 ~/Desktop/16기_AI온보딩_3일차_실습코드_Git_Branch/02-fast-forward-practice (hotfix)
+$ got commit -m "c3"
+bash: got: command not found
+
+SSAFY@2□□PC044 MINGW64 ~/Desktop/16기_AI온보딩_3일차_실습코드_Git_Branch/02-fast-forward-practice (hotfix)
+$ git commit -m "c3"
+[hotfix ec50920] c3
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+SSAFY@2□□PC044 MINGW64 ~/Desktop/16기_AI온보딩_3일차_실습코드_Git_Branch/02-fast-forward-practice (hotfix)
+$ git add .
+
+SSAFY@2□□PC044 MINGW64 ~/Desktop/16기_AI온보딩_3일차_실습코드_Git_Branch/02-fast-forward-practice (hotfix)
+$ git commit -m "c4"
+[hotfix 567d380] c4
+ 1 file changed, 1 insertion(+)
+
+SSAFY@2□□PC044 MINGW64 ~/Desktop/16기_AI온보딩_3일차_실습코드_Git_Branch/02-fast-forward-practice (hotfix)
+$ git log --oneline
+567d380 (HEAD -> hotfix) c4
+ec50920 c3
+95d8658 (master) c2
+d33fd57 c1
+
+SSAFY@2□□PC044 MINGW64 ~/Desktop/16기_AI온보딩_3일차_실습코드_Git_Branch/02-fast-forward-practice (hotfix)
+$ git switch master
+Switched to branch 'master'
+
+SSAFY@2□□PC044 MINGW64 ~/Desktop/16기_AI온보딩_3일차_실습코드_Git_Branch/02-fast-forward-practice (master)
+$ git merge hotfix
+Updating 95d8658..567d380
+Fast-forward
+ article.txt | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+SSAFY@2□□PC044 MINGW64 ~/Desktop/16기_AI온보딩_3일차_실습코드_Git_Branch/02-fast-forward-practice (master)
+$ git log --oneline
+567d380 (HEAD -> master, hotfix) c4
+ec50920 c3
+95d8658 c2
+d33fd57 c1
+
+SSAFY@2□□PC044 MINGW64 ~/Desktop/16기_AI온보딩_3일차_실습코드_Git_Branch/02-fast-forward-practice (master)
+$ git branch -d hotfix
+Deleted branch hotfix (was 567d380).
+
+SSAFY@2□□PC044 MINGW64 ~/Desktop/16기_AI온보딩_3일차_실습코드_Git_Branch/02-fast-forward-practice (master)
+$ git log --oneline
+567d380 (HEAD -> master) c4
+ec50920 c3
+95d8658 c2
+d33fd57 c1
+
+SSAFY@2□□PC044 MINGW64 ~/Desktop/16기_AI온보딩_3일차_실습코드_Git_Branch/02-fast-forward-practice (master)
+$ 
+
+
+
+
+세 번째 실습
+
+SSAFY@2□□PC044 MINGW64 ~/Desktop/16기_AI온보딩_3일차_실습코드_Git_Branch/03-way-merge-practice (hotfix)
+$ git log --oneline --all --graph
+* 5cdb32a (HEAD -> hotfix) c4
+* 78ce30e c3
+* c4d396a (master) c2
+* 47bdfdd c1
+
+SSAFY@2□□PC044 MINGW64 ~/Desktop/16기_AI온보딩_3일차_실습코드_Git_Branch/03-way-merge-practice (hotfix)
+$ git switch master
+Switched to branch 'master'
+
+SSAFY@2□□PC044 MINGW64 ~/Desktop/16기_AI온보딩_3일차_실습코드_Git_Branch/03-way-merge-practice (master)
+$ git status
+On branch master
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   article.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+SSAFY@2□□PC044 MINGW64 ~/Desktop/16기_AI온보딩_3일차_실습코드_Git_Branch/03-way-merge-practice (master)
+$ git add .
+
+SSAFY@2□□PC044 MINGW64 ~/Desktop/16기_AI온보딩_3일차_실습코드_Git_Branch/03-way-merge-practice (master)
+$ git commit -m "c5"
+[master f71a858] c5
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+SSAFY@2□□PC044 MINGW64 ~/Desktop/16기_AI온보딩_3일차_실습코드_Git_Branch/03-way-merge-practice (master)
+$ git log --oneline --all --graph
+* f71a858 (HEAD -> master) c5
+| * 5cdb32a (hotfix) c4
+| * 78ce30e c3
+|/  
+* c4d396a c2
+* 47bdfdd c1
+
+SSAFY@2□□PC044 MINGW64 ~/Desktop/16기_AI온보딩_3일차_실습코드_Git_Branch/03-way-merge-practice (master)
+$ git merge hotfix
+Merge made by the 'ort' strategy.
+ hotfix-article.txt | 2 ++
+ 1 file changed, 2 insertions(+)
+ create mode 100644 hotfix-article.txt
+
+SSAFY@2□□PC044 MINGW64 ~/Desktop/16기_AI온보딩_3일차_실습코드_Git_Branch/03-way-merge-practice (master)
+$ git log --oneline --all --graph
+*   d6966f4 (HEAD -> master) Merge branch 'hotfix'
+|\  
+| * 5cdb32a (hotfix) c4
+| * 78ce30e c3
+* | f71a858 c5
+|/  
+* c4d396a c2
+* 47bdfdd c1
+
+SSAFY@2□□PC044 MINGW64 ~/Desktop/16기_AI온보딩_3일차_실습코드_Git_Branch/03-way-merge-practice (master)
+$ git branch -d hotfix
+Deleted branch hotfix (was 5cdb32a).
+
+SSAFY@2□□PC044 MINGW64 ~/Desktop/16기_AI온보딩_3일차_실습코드_Git_Branch/03-way-merge-practice (master)
+$ git log --oneline --all --graph
+*   d6966f4 (HEAD -> master) Merge branch 'hotfix'
+|\  
+| * 5cdb32a c4
+| * 78ce30e c3
+* | f71a858 c5
+|/  
+* c4d396a c2
+* 47bdfdd c1
+
+SSAFY@2□□PC044 MINGW64 ~/Desktop/16기_AI온보딩_3일차_실습코드_Git_Branch/03-way-merge-practice (master)
+$ 
+
+
+
+
+네 번째 실습
+
+SSAFY@2□□PC044 MINGW64 ~/Desktop/16기_AI온보딩_3일차_실습코드_Git_Branch/04-merge-conflict-practice (master)
+$ git log --oneline --all --graph
+* fd5079f (HEAD -> master) c4
+* d002098 c3
+* b0172ca (hotfix) c2
+* aeebd0d c1
+
+SSAFY@2□□PC044 MINGW64 ~/Desktop/16기_AI온보딩_3일차_실습코드_Git_Branch/04-merge-conflict-practice (master)
+$ git switch hotfix
+Switched to branch 'hotfix'
+
+SSAFY@2□□PC044 MINGW64 ~/Desktop/16기_AI온보딩_3일차_실습코드_Git_Branch/04-merge-conflict-practice (hotfix)
+$ git status
+On branch hotfix
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   article.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+SSAFY@2□□PC044 MINGW64 ~/Desktop/16기_AI온보딩_3일차_실습코드_Git_Branch/04-merge-conflict-practice (hotfix)
+$ git add .
+
+SSAFY@2□□PC044 MINGW64 ~/Desktop/16기_AI온보딩_3일차_실습코드_Git_Branch/04-merge-conflict-practice (hotfix)
+$ git commit -m "c5"
+[hotfix 8b647f0] c5
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+SSAFY@2□□PC044 MINGW64 ~/Desktop/16기_AI온보딩_3일차_실습코드_Git_Branch/04-merge-conflict-practice (hotfix)
+$ git switch master
+Switched to branch 'master'
+
+SSAFY@2□□PC044 MINGW64 ~/Desktop/16기_AI온보딩_3일차_실습코드_Git_Branch/04-merge-conflict-practice (master)
+$ git merge hotfix
+Auto-merging article.txt
+CONFLICT (content): Merge conflict in article.txt
+Automatic merge failed; fix conflicts and then commit the result.
+
+SSAFY@2□□PC044 MINGW64 ~/Desktop/16기_AI온보딩_3일차_실습코드_Git_Branch/04-merge-conflict-practice (master|MERGING)
+$ git status
+On branch master
+You have unmerged paths.
+  (fix conflicts and run "git commit")
+  (use "git merge --abort" to abort the merge)
+
+Unmerged paths:
+  (use "git add <file>..." to mark resolution)
+        both modified:   article.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+SSAFY@2□□PC044 MINGW64 ~/Desktop/16기_AI온보딩_3일차_실습코드_Git_Branch/04-merge-conflict-practice (master|MERGING)
+$ git add .
+
+SSAFY@2□□PC044 MINGW64 ~/Desktop/16기_AI온보딩_3일차_실습코드_Git_Branch/04-merge-conflict-practice (master|MERGING)
+$ git stauts
+git: 'stauts' is not a git command. See 'git --help'.
+
+The most similar command is
+        status
+
+SSAFY@2□□PC044 MINGW64 ~/Desktop/16기_AI온보딩_3일차_실습코드_Git_Branch/04-merge-conflict-practice (master|MERGING)
+$ git status
+On branch master
+All conflicts fixed but you are still merging.
+  (use "git commit" to conclude merge)
+
+Changes to be committed:
+        modified:   article.txt
+
+
+SSAFY@2□□PC044 MINGW64 ~/Desktop/16기_AI온보딩_3일차_실습코드_Git_Branch/04-merge-conflict-practice (master|MERGING)
+$ git commit 
+[master ae78253] Merge branch 'hotfix'
+
+SSAFY@2□□PC044 MINGW64 ~/Desktop/16기_AI온보딩_3일차_실습코드_Git_Branch/04-merge-conflict-practice (master)
+$ 
+
+
+어떤 개발이든 global에서는 하지 않음
+파이썬 가상 환경
+버츄얼 인바이런먼트 venv
+
+
+SSAFY@2▒▒PC044 MINGW64 ~/Desktop
+$ python -V
+Python 3.11.9
+
+SSAFY@2▒▒PC044 MINGW64 ~/Desktop
+$ python -m venv venv
+
+치면 가상환경 폴더 생김
+
+가상환경은 on/off 개념. 켜야됨
+내가 어떤 가상환경에 있는지 알아야함
+가상환경을 끄지 않으면 다른 프로젝트로 왔다갔다 해도 해당 가상환경인 채임.
+
+
+SSAFY@2▒▒PC044 MINGW64 ~/Desktop
+$ python -V
+Python 3.11.9
+
+SSAFY@2▒▒PC044 MINGW64 ~/Desktop
+$ python -m venv venv
+
+SSAFY@2▒▒PC044 MINGW64 ~/Desktop
+$ source venv/Scripts/activa
+(venv)
+SSAFY@2▒▒PC044 MINGW64 ~/Desktop
+$ deactivate
+
+SSAFY@2▒▒PC044 MINGW64 ~/Desktop
+$
+
+deactivate 쳐서 끄거나 그냥 bash 창 끄면 됨

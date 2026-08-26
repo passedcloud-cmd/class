@@ -1,0 +1,70 @@
+원-핫 인코딩: 유의어 표현 못하는 0, 1 벡터
+워드 임베딩: 단어들 사이의 관계 포착 벡터
+Word2Vec - Skip-grams(중심 단어로 주변 찾기), continuous bag of words(주변으로 중심 단어 찾기)
+
+순차적 데이터: 순서 중요, 장기 의존성, 가변 길이
+
+RNN 순환신경망: 이전 시점의 정보를 담는 hidden state 업데이트. 역전파 시 기울기 소실 문제 있음
+LSTMs: short-term information을 저장하는 hidden state와 long-term information을 저장하는 cell state. Forget gate, Input gate, output gate
+
+언어모델
+N-gram 언어모델
+코퍼스(말뭉치)
+SMT(Statistical Machine Translation): 번역 모델과 언어모델로 나누는 방법
+NMT(Neural Machine Translation): 인공 신경망 Seq2Seq으로 기계 번역을 수행
+
+Seq2Seq: 2개의 LSTM 이용. Encoder(고정된 차원의 큰 벡터 표현 얻음)-Decoder(벡터로부터 출력 시퀀스를 생성함)
+bottleneck problem: 정보 손실
+Teacher Forcing
+토큰 출력 방법 Greedy inference, Beam search
+
+Attention: 디코더가 단어를 생성할 때, 인코더 전체 hidden state 중 필요한 부분을 직접 참조. NMT 성능 향상, Bottleneck problme 해결, 기울기 소실 완화. 해석 가능성, 정렬.
+Attention은 각 단어의 표현을 query로 두고, value 집합으로부터 필요한 정보를 직접 불러와 결합함. 
+Attention의 Query와 values: decoder의 hidden state와 encoder의 hidden states
+1. Query와 values 사이 유사도 점수(score) 계산
+2. softmax를 통해 확률 분포
+3. 분포를 이용해 values를 가중합 -> context vector
+
+
+self-attention
+attention 메커니즘을 encoder-decoder간이 아닌 한 문장 내부에서 적용. 모든 단어가 각 층에서 직접 상호작용함. 장거리 의존성 포착, 병렬 처리 가능. Query 벡터, Key 벡터, Value 벡터
+1. 순서 정보 부재: Positional Encoding(Sinusoidal Position Encoding, Learned Absolute Position Embedding) 
+2. 비선형성 부족: Feed-Forward NetWork(Fully Connected + ReLU 등) 추가
+3. 미래 참조 문제: Masked Self-Attention
+
+
+트랜스포머
+Self-Attention을 핵심 메커니즘으로 하는 신경망 구조. encoder-decoder 구조로 설계됨. RNN 아님. 병렬 처리 가능. 
+Multi-Headed Attention: Attention Head 여러 개
+Scaled Dot product: 내적 값을 그대로 사용하지 않고 나눠주어 스케일을 조정함. softmax 함수 출력이 뾰족해져 기울기 소실이 일어나지 않게 함 
+Residual Connection: 기울기 소실/폭발을 막기 위해 기존 입력과의 차이만 학습
+Layer Normalizaion: 레이어 단위에서 hidden vector 값을 정규화
+트랜스포머의 decoder: 단방향 문맥. Masked self-attention(multi-head), Add&Norm(Residual Connection + Layer Normalizaion), Feed-Forward Network(비선형 변환), Add&Norm(Residual Connection + Layer Normalizaion) 4개 구조 
+트랜스포머의 Encoder: 양방향 문맥. Decoder와의 차이점은 self-attention에서 masking을 제거한 것 뿐. 
+Cross-Attention: Self-attention과는 다르게 Query는 decoder에서, Key와 value는 encoder에서 가져옴. 트랜스포머의 decoder에는 encoder의 출력 표현을 참조하는 cross-attention을 추가하여 입/출력을 연결
+
+사전학습
+
+Encoder모델
+양방향 문맥 
+BERT: Masked LM방법으로 사전학습을 수행. 시퀀스를 생성을 잘 못함
+학습 방법1: Masked LM
+학습 방법2: Next Sentence Prediction(NSP)-input이 들어오면 Token Embeddings, Segment Embeddings, Position Embeddings으로 나눔 
+[CLS]토큰, [SEP] 토큰
+
+Encoder-Decoder 모델
+T5(Text-to-Text Transfer Transformer)
+학습 방법: Span Corruption. 디코더가 placeholder에 해당하는 원래 span을 복원하도록 학습
+
+Decoder 모델 
+NTP을 학습. fine-tuning함
+NLI(자연어 추론(Natural Language Inference))
+입력 토큰에 [START], [DELIM], [EXTRACT]라는 특수 토큰을 붙임. [EXTRACT]위치의 hidden state에 linear layer를 붙여 classifier로 사용 
+
+In-context learning 
+별도의 파인 튜닝 없이 컨텍스트 안의 예시만 보고도 새로운 태스크를 수행
+
+
+
+
+

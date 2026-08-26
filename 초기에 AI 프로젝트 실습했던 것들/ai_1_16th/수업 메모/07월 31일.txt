@@ -1,0 +1,139 @@
+변경 규모 증가에 따른 리스크 증가 → 할루시네이션
+하네스 추가, 에이전트, 오케스트라 등등으로 막으려고 하는 중
+
+ctrl + shift + p
+manage language models
+
+기존에 있던 key는 api키가 만료되었을 거라서 삭제하기
+Add Models 후에 "SSAFY AI 1 강의용 모델"이라고 이름 짓고
+제공받은 반 API 키를 입력 후에 엔터. 그 다음에 ZDR도 엔터
+
+copilot chat 창을 열고 하단의 채팅 입력창 아래 선택 - 모델을 내가 등록한 모델로 변경. GPT 5- Mini
+
+코드 쓰는 스타일 통일이 중요
+역할 구분 재도입
+
+사용자 지정 지침
+채팅창 - 톱니바퀴 - instructions - new instructions (user)
+지침 생성 가능
+
+new instructions(workspace)하면 내가 쓰는 것 (깃헙이나 클로드 등등)에 맞춰서 지침을 설정할 수 있음
+
+
+.github이라는 폴더 안에 copilot-instructions.md라는 마크다운 파일을 만들면 지침임
+가 내가 이 프로젝트의 지침을 작성하는 곳
+
+에이전트에게 planner(계획) , generator(코드 생성) , reviewer(코드 검증) 역할을 구분 시킬 것임
+각 역하레 맞춰서 지침을 따로 작성해야 함
+
+라우팅해야 함
+라우팅 테스트도 필요
+
+프로젝트 지침 - 사용자가 요청했을 때 검수해야할 지침
+.github이라는 폴더 안에 instructions 폴더 안에 있는 md 파일들 = 각 역할별 지칭
+
+
+context window(최대 처리할 수 있는 텍스트의 양)
+컨텍스트 윈도우에 도달하면 창 끄고 다시 켜기
+
+단일 세션 방식의 한계
+설정한 지침 확인하고, 파일도 보고, 도구도 활용하고, 대화 하는 거에 토큰 다 소모함
+→ 세션을 나눠서 각자에게 역할을 부여
+
+맨 오른쪽에 창 아이콘 누르면 새로운 세션 열 수 있음.
+
+
+1. 에이전트 구성
+2. 오케스트레이션: 세션 공통 지침과 산출물 연결
+3. 하네스 엔지니어링: 에이전트가 다른 에이전트의 영역을 침범하지 않게 배치
+
+
+implementer와 reviewer라는 에이전트를 만들 것
+스킬: 프롬프트 엔지니어링
+
+
+하네스: 에이전트가 일하는 환경을 설계
+local git branch로 격리 - sand box라는 가상 환경을 만드는 것
+
+휴먼 인 더 루트
+에이전트가 기획 - 수행 -리뷰  하는 것을 사람이 확인하는 것
+
+LLM이 어떤 tool을 사용할 것인지 - 사람이 결정
+언제 사람이 개입할 것인지 입력해야 함
+
+AI 수업 폴더 - 03_harness - ssafy-learning-planner 폴더 복사
+.github의 agents에 지시사항
+docs에 에이전트들이 각자 해야할 일
+
+
+
+
+Agent모드는 에이전트
+Ask 모드도 에이전트. 다만 도구가 없음. 파일 시스템에 접속해서 파일을 읽는 기능만 있음
+plan 모드도 에이전트. 다만 파일을 읽고 분석해서 무엇을 할지 plan하는 기능만 있음
+AGENTS.md : 위에 있는 애들을 통제하는 것. 
+implementar와 Reviewer도 에이전트. 사용자 정의 가능
+
+
+copilot-instructions.md는 나와 채팅을 나누는 전체 통제하는 것
+copilot 서비스에서 제공하는 에이전트에 대한 md.
+
+docs에 analysis.md / plan.md / task.md 쪼개고
+copilot-instructions.md 쪼개고
+agents라는 폴더에 implementer.agent.md / reviewer.agent.md 를 쪼개고
+프롬프트로 각자의 역할을 쪼개서 토큰을 아낌
+
+에이전트를 구조화하는 연습을 해야 함
+내 프로젝트에 대한 배경지식이 필요함
+
+자동승인 활성화 on/off 가능
+
+라우팅
+서브 에이전트 
+
+skill - 반복작업
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

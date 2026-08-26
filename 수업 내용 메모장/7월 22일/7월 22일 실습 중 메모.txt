@@ -1,0 +1,121 @@
+
+
+ 
+코드업 파이썬 기초 100제
+반복문을 최소 1~2바퀴 정도까지 직접 변수의 변화를 손으로 체크해보는 습관
+새로운 변수를 만드는 데 익숙해지기 (빈 리스트, 빈 딕셔너리) 등
+AI를 1순위로 두고 힌트를 줄 수 있도록 세팅하기
+
+
+대규모 신규 고객 등록/ 대규모 도서 대여 서비스 해보기
+
+모듈 연습Lv1
+import에서 경로 확인 필요할 듯. 경로를 정확히 어디를 기준으로 잡아야할지
+
+TypeError: 'int' object is not iterable
+for i in 6 (이건 불가함. 6은 반복 가능한 객체(iterable)이 아니기 때문.  반복 가능한 객체(iterable)은 리스트, 문자열, 튜플, 딕셔너리 등임.
+
+도서관 사용자 관리 서비스 
+import requests와
+API_URL로 무작위 유저 정보 요청 경로
+이게 뭔 소린지 알아봐야 함
+
+<딕셔너리>[기존에 있는key].append(추가할 value)
+
+
+sorted 함수
+sorted(<리스트>, key= , 0 or 1)
+​​sorted( , reverse = True) # reverse = True면 내림차순
+예시) 주어진 정렬을 오름차순으로 정렬한 결과를 출력하시오.
+	unsorted_list = ['하', '교', '캅', '의', '지', '가']
+	print(sorted(unsorted_list))
+
+
+global_data변수를 언패킹해서 인자로 전달하기
+global_data = {'subject': 'python', 'day': 3, 'title': '함수 활용하기'}
+result_3 = create_data(**global_data)
+print(result_3)
+
+
+
+map 함수
+append 함수
+리스트이름.append(데이터값)
+.copy() → 완전히 새로운 값
+
+
+many_user = [{'이름' : '김시습', '나이' : 20}, {'이름' : '허균', '나이' : 16}, {'이름' : '남혜인', '나이' : 25}]
+user_info = []
+for i in many_user : 
+    user_info.append({many_user[i]['이름'] : many_user[i]['나이']}) 
+print(user_info)
+
+이 코드에서 TypeError: list indices must be integers or slices, not dict라고 오류가 뜨는데 그 이유를 모르겠습니다. many_user는 리스트니까 인덱스로 요소를 꺼낼 수 있고, 리스트 안에 있는 요소가 디렉토리니까 [key값]을 적으면 리스트 안에 있는 디렉토리의 key값을 꺼낼 수 있는 거 아닌가요?
+
+→ ★ ★ for i in many_user : 에서 i는 요소의 개수가 아님. many_user가 디렉토리이므로 디렉토리 {'이름' : '김시습', '나이' : 20}, {'이름' : '허균', '나이' : 16}, {'이름' : '남혜인', '나이' : 25}가 들어간 거임. ★★
+
+
+
+
+
+
+도서관 사용자 관리 서비스를 구축하기 위한 임시 데이터를 수집하는 코드를 작성하는 숙제를 받았어요.
+문제의 요구 사항은 다음과 같습니다.
+1. 코드를 실행하기 위해 requests를 설치한다.
+2. 설치 방법 및 사용 방법은 https://pypi.org/project/requests/ 문서 참고
+3. 무작위 유저 정보를 얻어오기 위한 경로 open API https://jsonplaceholder.typicode.com/guide/ 문서 참고
+
+
+import requests
+from pprint import pprint as print
+
+# 무작위 유저 정보 요청 경로
+API_URL = 'https://jsonplaceholder.typicode.com/users/1'
+# API 요청
+response = requests.get(API_URL)
+# JSON -> dict 데이터 변환
+parsed_data = response.json()
+
+# 응답 데이터 출력
+print(response)
+
+# 변환 데이터 출력
+print(parsed_data)
+# 변환 데이터의 타입
+print(type(parsed_data))
+
+# 특정 데이터 출력
+print(parsed_data['name'])
+print(parsed_data['username'])
+print(parsed_data['company']['name'])
+
+
+requests를 설치한다는 건 무슨 의미인가요?
+파이썬은 인터넷에 접속해서 다른 서버에 데이터를 요청하는 기능은 기본으로 들어있지 않아요
+그래서 다른 사람들이 미리 만들어놓은 코드 묶음(=라이브러리/패키지)을 가져다 쓰는데, requests가 바로 "HTTP 통신을 쉽게 하게 해주는 패키지
+pip install requests (requests라는 코드 묶음을 내 컴퓨터에 다운로드)
+import requests로 그 기능을 불러다 쓸 수 있음
+
+
+API가 뭐죠?
+API: 프로그램끼리 대화하기 위한 약속된 통로. 너가 이 주소로 요청을 보내면, 내가 정해진 형식(JSON)으로 데이터를 줄게
+API_URL = 'https://jsonplaceholder.typicode.com/users/1'
+경로. /users/1은 "1번 유저 데이터를 줘"라는 의미의 경로
+
+
+requests.get(API_URL)은 뭘 하나요?
+이 줄이 실제로 인터넷을 통해 서버에 "이 주소 데이터 줘!"라고 요청을 보내는 부분이에요. 서버가 응답을 보내주면 그 결과가 response라는 변수에 담겨요
+response는 단순 데이터가 아니라 "응답 전체 정보"를 담은 객체예요. 상태 코드(200 성공, 404 없음 등), 헤더, 그리고 본문(body) 데이터를 다 포함하고 있어요.
+
+
+response.json()
+서버가 보내주는 응답 본문은 사실 문자열(텍스트) 형태의 JSON이에요. response.json()은 그 텍스트를 파이썬이 다룰 수 있는 dict(딕셔너리) 타입으로 변환해주는 함수예요.
+변환 전: '{"name": "Leanne Graham", ...}' (그냥 긴 문자열)
+변환 후: {'name': 'Leanne Graham', ...} (딕셔너리, 키로 값을 꺼낼 수 있음)
+
+
+from pprint import pprint as print
+"pretty print"의 줄임말로, 복잡한 데이터(특히 중첩된 dict나 list)를 보기 좋게 줄바꿈하고 정렬해서 출력해주는 함수예요. 파이썬 표준 라이브러리라 따로 설치 안 해도 돼요 (pip install 필요 없음).
+
+
+

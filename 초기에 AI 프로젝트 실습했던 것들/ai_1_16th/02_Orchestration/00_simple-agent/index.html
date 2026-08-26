@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SSAFY 학습 플래너</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="auth-area">
+      <div id="auth-area"></div>
+    </header>
+
+    <script>
+      function escapeHtml(str) {
+        return str.replace(/[&<>\"']/g, function (s) {
+          return ({
+            '&': '&amp;','<': '&lt;','>': '&gt;', '"': '&quot;', "'": '&#39;'
+          })[s];
+        });
+      }
+
+      function updateAuthUI() {
+        const user = localStorage.getItem('user');
+        const authArea = document.getElementById('auth-area');
+        const planner = document.querySelector('.planner');
+
+        if (user) {
+          authArea.innerHTML = `<div class="user-greeting">안녕하세요, ${escapeHtml(user)} <button id="logoutBtn">로그아웃</button></div>`;
+          planner.style.display = '';
+          document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.removeItem('user');
+            updateAuthUI();
+          });
+        } else {
+          authArea.innerHTML = `<form id="login-form" class="login-form"><input id="username" placeholder="이름을 입력하세요" autocomplete="username" /><button type="submit">로그인</button></form>`;
+          planner.style.display = 'none';
+          document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const v = document.getElementById('username').value.trim();
+            if (!v) { alert('이름을 입력하세요.'); return; }
+            localStorage.setItem('user', v);
+            updateAuthUI();
+          });
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', updateAuthUI);
+    </script>
+    <main class="planner">
+      <p class="eyebrow">SSAFY LEARNING PLANNER</p>
+      <h1>오늘의 학습 항목</h1>
+      <p class="description">할 일을 추가하고 완료 상태를 관리해 보세요.</p>
+
+      <form id="task-form" class="task-form">
+        <label class="sr-only" for="task-input">학습 내용</label>
+        <input id="task-input" type="text" placeholder="예: JavaScript 배열 복습" autocomplete="off" />
+        <button type="submit">추가</button>
+      </form>
+
+      <ul id="task-list" class="task-list" aria-live="polite"></ul>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
+

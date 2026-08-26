@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .card {
+      width: 80%;
+      border: 1px solid black;
+      /* 1 */
+      display: flex;
+      /* 2 */
+      flex-wrap: wrap;
+    }
+
+    img {
+      /* 이미지가 부모 크기의 100%를 키우고 있음 */
+      width: 100%;
+    }
+
+    .thumbnail {
+      /* 3 */
+      flex-basis: 700px;
+      /* 이미지가 700px을 넘어서지 못함 */
+      /* 4 */
+      flex-grow: 1;
+      /* 남은 여백을 1씩 배분 */
+      /* flex: 1 700px; */
+    }
+
+    .content {
+      /* 3 */
+      flex-basis: 350px;
+      /* 내용물에 350px만큼의 자리를 줌. 350px만큼의 공간이 오른쪽에 생기면 오른쪽으로 이동함*/
+      /* 4 */
+      flex-grow: 1;
+      /* 남은 여백을 1씩 배분 */
+      /* flex: 1 350px; */
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card"> 
+    <!-- 카드한테 반응형 레이아웃을 적용해야 함 -->
+    <img class="thumbnail" src="images/sample.jpg" alt="sample">
+    <div class="content">
+      <h2>Heading</h2>
+      <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis minus sed expedita ut nihil tempora
+        neque autem odio eos, repudiandae blanditiis, molestiae consequatur. Adipisci illo dolor repellat alias
+        maiores.
+        Aut?</p>
+    </div>
+  </div>
+</body>
+
+</html>
