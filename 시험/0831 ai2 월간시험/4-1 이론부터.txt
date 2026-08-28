@@ -1,0 +1,81 @@
+# 4-1_LangChain 서비스 개발
+## Post-training(Instruction-tuning, RLHF)
+Pre-traininng(사전 학습): 방대한 텍스트 데이터를 통해 언어 패턴과 지식을 배우는 단계
+다음 단어 예측(Next Token Prediction)
+질문에 대한 답을 하지는 않음
+
+Post-training(사후 학습): 사람이 원하는 방식으로 대화하고, 안전하고 유용하게 만드는 단계 
+유저의 의도를 파악하고 답변을 출력
+
+사전 학습 후 파인 튜닝 진행 
+파인 튜닝: 사전학습된 기존 모델에 특정 작업에 맞게 추가로 학습
+Instruction-tuning: 언어모델이 사람이 내린 지시문을 따르도록 학습. 정답 레이블이 필요.
+다양한 태스크에서 지시문-응답 쌍을 모아 파인 튜닝 -> 학습하지 않은 새로운 태스크에서 평가 진행 
+지시문, 입력, 출력을 언어모델로부터 생성 
+pre-training에 비해 많은 데이터가 필요하지 않음 
+MMLU(Massive Multitask Language undrestanding): Instruction-tuned된 언어 모델 평가 벤치마크 
+Instruction-tuning의 한계
+1. 개방형/창의적 생성 같은 테스크에는 정답 없음
+2. 언어 모델링은 모든 토큰 레벨의 오류를 동일하게 취급하지만 어떤 오류는 다른 오류보다 심하게 적용
+3. 사람이 만든 답변이 최적이 아닐 수 있음 
+
+RLHF(Reinforcement Learning from Human Feedback)
+Human-in-the-loop ML
+데이터 수집 및 감독 학습 -> 비교 데이터 수집 및 보상 모델 학습 -> 강화학습(PPO)로 정책 최적화
+인간의 선호도는 일관성이 없고 기준 어긋남 -> 점수 대신 응답을 비교해서 보상 모델 학습 
+ChatGPT: Instruction-tuning + RLHF
+리워드 모델링의 한계점: 리워드 해킹(인간의 선호도는 일관성이 부족함), 환각 문제
+
+DPO(Direct Preference Optimizaion): RLHF에서 RL(강화학습) 제거. 사람이 비교한 선호 데이터를 이용해 언어 모델의 확률 분포를 직접 조정함. 보상 모델과 PPO 없이도 높은 성능을 달성 
+RLVR(Leinforcement Leargning with Verifiable REward): RLHF에서 수학처럼 답이 분명한 문제들은 정답 여부로 리워드 부여
+
+# Retrival-augmented Language Models(Information Retrieval, RAG)
+Retrival-augmented LM: 추론 시 외부 데이터 저장소를 불러와 활용하는 언어 모델
+구성 요소: datastore, Query, Index, Language Model 
+datestore: 가공되지 않은 대규모 텍스트 코퍼스. 라벨링되지 않음. 구조화 안됨
+쿼리: 검색 질의 / Retrieval input. 언어모델의 질의(input)과 같아야 하는 것은 아님 
+인덱스: 문서나 단락을 체계적으로 정리하여 더 쉽게 찾을 수 있도록 한 것
+각 정보 검색(Information Retrieval) 메서드는 인덱싱 과정에서 구축된 인덱스를 활용하여 쿼리와 관련 있는 정보를 식별함. 
+검색(Retrieval): datastore에 있는 수 많은 정보 중에서 주어진 쿼리와 가장 관련성이 높은 정보를 찾아내는 과정
+ 
+Retrieval-augmented Generation(RAG): 사용자의 질문에 답하기 위해, datastore에서 관련 정보를 검색해와서 이를 언어모델에 생성 단계에 함께 활용하도록 함 
+
+Information Retrieval
+검색 질의와 가장 관련성 높은 정보 제공 
+정보 검색(IR): 사용자의 질의(쿼리)에 맞는 정보를 대규모 데이터에서 찾아 제공하는 과정
+활용: 웹 서치 & 아이템 서치, 추천 서비스 
+Retriever: 사용자의 질의(쿼리)에 맞는 후보 문서를 저장소에서 찾아오는 모듈. RAG에세서 첫 단계 역할. Sparse Retriever와 Dense Retriever 두 가지 종류
+Sparse Retriever: 어휘적 유사도 기반. 쿼리와 문서 간의 정확한 용어 일치(어휘적 유사도)에 기반
+Sparse Retriever - TF-IDF: 문서 내 특정 단어의 중요도를 나타내는 가중치 방식
+TF(Term Frequency): 단어가 문서에 얼마나 자주 등장하는지. 자주 등장하는 단어는 중요.
+IDF(Inverse Document Frequency): 단어가 전체 코퍼스에서 얼마나 드물게 등장하는지. 너무 많은 문서에서 등장하는 단어는 덜 중요함. 예)"this, is, and"
+Sparse Retriever 장점
+- 단순성: 구현과 이해 쉬움 
+- 효율성: inverted index 구조로 빠른 검색
+- 투명성: 검색 결과 해석 가능
+Sparse Retriever 단점
+- 제한된 의미 이해. 유의어끼리 매칭 안됨
+
+Dense Retriever: 의미적 유사도 기반. 쿼리와 문서를 표현하기 위해 dense vector(임베딩)으로 의미적 유사도에 기반 
+Dense Retriever - Bi-encoder: Bi-encoder retriever는 대조 학습을 통해 학습. 쿼리가 긍정적인 문서와 가깝게 유지되도록 하고 부정적인 문서에서는 물어지도록 유도 
+Dense Retriever - cross-encoder: Cross-encoder 아키텍처가 두 개의 텍스트를 하나의 시퀀스로 결합. self-attention을 통해 모든 쿼리와 문서 토큰이 상호작용해서 Bi0encoder보다 정확도 높음. 하지만 모든 쿼리-문서 쌍을 개별적으로 모델에 입력해야 해서 비용이 크고 느림 
+Dense Retriever 장점:
+의미적 이해: 동의어나 다양한 표현 효과적 처리
+풍부한 쿼리 표현: 복잡하거나 긴 검색 쿼리 의미 포착
+Dense Retriever 단점:
+높은 연산 비용
+제한된 투명성: 블랙박스처럼 작동. 특정 문서가 왜 검색되었는지 해석 어려움
+데이터 및 모델 의존성: 학습 데이터의 품질이나 모델 변경에 크게 영향 받음
+
+
+Dense Retriever - Bi-encoder는 두 문자을 따로 인코딩. 빠르고 대규모 검색에 적합하나 정확도 낮음
+Dense Retriever - Cross-encoder는 두 문장을 함께 처리함. 매우 느리지만 세밀한 상호작용을 포착하기 때문에 정확도 높음 
+
+
+94페이지 해야 함
+
+
+
+
+
+
