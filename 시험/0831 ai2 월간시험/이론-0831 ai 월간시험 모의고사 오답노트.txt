@@ -1,0 +1,62 @@
+Q. 도메인 특화 AI특정 분야(의료, 법률, 금융 등)에 특화된 AI 시스템을 구축하기 위해 주로 사용되는 기법들의 조합으로 가장 적절한 것은?  도메인 데이터 기반 PEFT(LoRA) 파인튜닝 + 도메인 지식 DB 기반 RAG + 전문 도구 연결 Agent  
+
+Q. AI Agent의 Tool 활용LLM Agent가 도구를 호출할 때 작동하는 메커니즘으로 올바른 것은?
+도구를 실행할 함수 인터페이스 이름과 인자(Arguments)를 생성하여 외부 프로그램에 전달한다.  
+
+Q. CNN Inductive Bias
+CNN(Convolutional Neural Network)이 내장하고 있는 대표적인 귀속 편향(Inductive Bias) 두 가지는?'
+지역성(Locality)과 이동 불변성/동변성(Translation Invariance/Equivariance. 위치가 바뀌어도 특성을 알아챔)
+
+
+Q. 저비트 Quantization
+NF4(NormalFloat 4-bit)는 가중치의 정규분포 특성을 활용하여 일반 INT4보다 동일 4비트 대비 정확도 손실을 줄여준다.
+비트 수가 작을수록 → 모델은 가벼워지고 빨라지지만, 정확도는 떨어질 위험이 커져요.
+FP(부동소수점)는 넓은 범위를 유연하게 표현하고, INT(정수)는 계산이 단순하고 빨라요.
+
+
+Q. 배포 환경별 경량화 전략
+비트 쉬프팅: 컴퓨터에서 이진수의 비트 자리를 왼쪽이나 오른쪽으로 밀어서 이동시키는 연산
+비트 쉬프팅 과정: 임시로 스케일 업(정수화) -> 양자화 및 연산 -> 스케일 다운. 그러면 실수가 사라져서 정수 연산 됨
+
+Q. 단일 태스크 파인튜닝
+기존에 학습했던 일반적인 지식을 잊어버리는 재앙적 망각(Catastrophic Forgetting) 현상이 발생한다.
+
+
+Q. RAG 시스템의 구성 요소 및 작동원리
+키워드 일치(어휘적 유사도) 기준은 Sparse Retriever(TF-IDF 등)이며, Dense Retriever는 임베딩 벡터 간의 의미적 유사도(Semantic Similarity)를 기반으로 문서를 검색합니다
+
+Q. Small VLM
+경량화된 소형 VLM(Small Vision-Language Model)을 개발/배포할 때 주로 활용되는 기술 조합으로 가장 적절한 것은?
+경량화 언어모델(Small LLM) + 크기 감소된 비전 인코더 + QLoRA / Quantization
+
+Q. VLM 학습 절차
+시각-언어 모델(Vision-Language Model)의 일반적인 학습 절차 구성으로 옳은 것은?
+[이미지 인코더와 텍스트 인코더 간 정렬(Alignment) 사전학습] ->  [VLM 지시 학습(Instruction Tuning)]
+
+Q. 멀티모달 비디오 생성
+멀티모달 텍스트-투-비디오(Text-to-Video) 또는 이미지-투-비디오 생성 모델이 갖는 대표적인 구조적 특징 및 난제는?
+프레임 간(Temporal) 시간적 연관성과 일관성(Consistency)을 유지하는 연산이 필요하다.
+
+-------------------------------------------------------------------
+
+LoRA
+특정 weight matrix(base wight)에 low-rank updater를 추가
+원본 weight를 고정하고 추가되는 low-rank weight만 학습
+높은 표현력에 adapter layer보다 훨씬 적은 추가 weight
+
+QLoRA(경량화된 Low-Rank adaptation) : 경량화 + LoRA
+원본 모델을 강하게 원자화(NF4 4bit normal format)
+LoRA를 적용하는 low-rank weight는 BF16등 높은 해상도를 유지하면서 학습
+전체 모델의 복잡도를 대폭 줄이면서 목표로 하는 task에 대해서는 적어도 높은 성능을 달성  
+
+Out-of-Distribution(OOD) 분포 이동
+
+CNN·FC 파라미터 계산: 출력 채널 수 x 입력 채널 수 * K * + 출력 채널 수
+
+1x1 convolution 연산량
+https://aiflower.tistory.com/7
+FLOPs 연산량 = H' * W' * Cout * Cin * K * K
+
+다중공선성은 회귀분석에서 독립변수들 간에 강한 선형 상관관계가 나타나는 상태. 회귀분석을 진행할 때 여러 설명 변수가 서로 겹치는 정보를 가지고 있어, 각 변수가 고유한 영향을 제대로 설명하지 못하게 되는 현상
+
+ROC-AUC는 머신러닝에서 이진 분류 모델의 성능을 평가하는 대표적인 지표

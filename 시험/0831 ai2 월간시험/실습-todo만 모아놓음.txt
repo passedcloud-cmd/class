@@ -1,0 +1,207 @@
+@@@@@@@@@@@@@@@@@@@@@@@
+4-2 RAG
+@@@@@@@@@@@@@@@@@@@@@@@
+
+# LLM에게 직접 질문
+response = llm.invoke([HumanMessage(content=question)])
+
+# 컨텍스트를 포함한 프롬프트 구성
+prompt_template = ChatPromptTemplate.from_messages([
+	("system", """당신은 AI 온라인 서점의 고객 서비스 상담원입니다.
+다음 자료를 참고하여 고객의 질문에 정확하게 답변해주세요.
+자료에 없는 내용은 "해당 정보는 제공된 자료에 없습니다."라고 답변하세요.
+
+[참고자료]
+{context}"""),
+	("human", "{question}")
+
+response = llm.invoke(messages)
+print(response.content)
+
+# 키워드 검색 함수
+def keyword_search(documents, keyword):
+	"""문서 리스트에서 키워드를 포함한 문서 검색"""
+	results = []
+	for doc in documents:
+		if keyword in doc.page_content:
+			results.append(doc)
+	return results
+
+# Vector store 생성 (문서 단위 - 페이지별)
+vectorstore = Chroma.from_documents(
+	documents=all_documents,
+	embedding=embeddings,
+	collection_name="yes24_docs_page"
+
+# Retriever 생성
+retriever = vectorstore.as_retriever(search_kwargs={"k": 3}
+
+# 최적 청킹 설정 선택 및 전체 문서 청킹
+text_splitter = RecursiveCharacterTextSplitter(
+	chunk_size=300,
+	chunk_overlap=50,
+	length_function=len,
+	separators=["\n\n", "\n", ".", " ", ""]
+
+#LangGraph StateGraph로 RAG 파이프라인 구현
+# 1. State 타입 정의
+class RAGState(TypeDict):
+	question: str
+	context: str
+	answer: str
+
+# 2. retrieve 노드: 질문으로 관련 문서 검색
+def retrieve(state: RAGState) -> RAGState:
+	"""Vector Store에서 관련 문서를 검색하는 노드"""
+	question = state["question"]
+	docs = retriever_chunked.invoke(question) # 청킹된 vector store에서 검색
+	context = "\n\n".join([doc.page_content for doc in docs]) # 검색 결과를 문자열로 포맷팅
+	return {"context" : context}
+
+# 3. generate 노드: 검색된 문서로 답변 생성
+def generate(state: RAGstate) -> RAGState:
+	"""검색된 문서를 기반으로 답변을 생성하는 노드"""
+	question = state["question"]
+	context = state["context"]
+
+	# RAG 프롬프트 정의
+	rag_prompt = ChatPromptTemplate.from_messages([
+		("system", """당신은 AI 온라인 서점 'Yes24'의 고객 서비스 상담원입니다. 다음 검색된 자료를 참고하여 고객의 질문에 정확하고 친절하게 답변해주세요.
+
+[검색된 자료]
+{context}
+
+답변 규칙:
+1. 검색된 자료를 기반으로 답변하세요
+2. 자료에 없는 내용은 추측하지 마세요
+3. 존댓말을 사용하세요
+4. 간결하고 명확하게 답변하세요"""),
+	("human", "{question}")
+	])
+
+	# 프롬프트 생성 후 LLM 직접 호출
+	messages = rag_prompt.format_message(context=context, question=question)
+	response = llm.invoke(messages)
+	answer = response.content
+
+	return {"answer": answer}
+
+# 4. StateGraph 구성
+# - 노드 추가: retrieve, generate
+# - 엣지 연결: START → retrieve → generate → END
+workflow = StateGraph(RAGState)
+
+workflow.add_node("retrieve", retrieve)
+workflow.add_node("generate", generate)
+
+workflow.add_edge(START, "retrieve")
+workflow.add_edge("retrieve", "generate")
+workflow.add_edge("generate", END)
+
+# 그래픽 컴파일
+rag_graph = workflow.compile()
+#그래프 실행
+result = rag_graph.invoke({"question": question})
+print(result["answer"])
+
+
+
+
+@@@@@@@@@@@@@@@@@@@@@@@
+4-2 RAG
+@@@@@@@@@@@@@@@@@@@@@@@
+
+# 환경 변수 설정 및 API 키 로드
+load_dotenv(".env")
+GMS_KEY = os.getenv("GMS_KEY")
+
+#프롬프팅 기법 비교 실험
+#1. zero-shot 프롬프트
+zero_shot_prompt = f"{user_query}"
+zero_shot_result = chat_completion(zero_shot_prompt, SYSTEM_PROMPT)
+print(zero_shot_result)
+
+#2. Few-shot 프롬프트
+few_shot_prompt = f"""다음은 영화 추천 예시입니다:
+
+질문: 로맨스 영화 추천해줘
+답변: 영화 제목: 노트북
+개봉 연도: 2004년
+시대를 초월한 순수한 사랑 이야기로, 감동적인 스토리와 아름다운 영상미가 돋보이는 클래식 로맨스 영화입니다.
+
+질문: 코미디 영화를 추천해줘
+답변: 영화 제목: 행오버 (The Hangover)
+개봉 연도: 2009년
+추천 이유: 총각파티 후 기억을 잃은 친구들의 황당한 모험을 그린 코미디로, 예측 불가능한 전개와 유쾌한 유머가 가득합니다.
+
+질문: {user_query}
+답변:"""
+
+few_shot_result = chat_completion(few_shot_prompt, SYSTEM_PROMPT)
+print(few_shot_result)
+
+# 3. CoT 프롬프트
+
+cot_prompt = f'''{user_query}
+영화를 추천하기 전에 다음 단계를 따라 생각해주세요:
+
+1단계: 스릴러 장르의 핵심 요소가 무엇인지 정의합니다 (긴장감, 반전, 서스펜스 등)
+2단계: 이 요소들을 잘 갖춘 대표적인 스릴러 영화들을 떠올립니다
+3단계: 그 중에서 가장 추천할 만한 영화 1개를 선택하고 이유를 설명합니다
+
+위 단계를 따라 추론 과정을 보여주고, 최종 추천을 해주세요.'''
+
+cot_result = chat_completion(cot_prompt, SYSTEM_PROMPT)
+print(cot_result)
+
+# 1. 구조화된 출력을 위해 시스템 프롬프트를 작성
+STRUCTURED_GENERATOR_SYSTEM_PROMPT = """당신은 세상의 모든 영화를 꿰뚫고 있는 영화 전문가 '시네마스터'입니다.
+사용자의 요청에 맞춰 영화를 추천하는 역할을 맡고 있습니다. 영화는 반드시 하나만 추천합니다.
+
+## 1. 입력 형식
+[추천받고자 하는 영화 장르]
+
+## 2. 작업 지시
+- 요청된 장르에 가장 적합한 영화 1개를 추천합니다.
+- 추천 이유는 구체적이고 설득력 있게 작성합니다.
+- 친근하고 유머러스한 말투로 설명합니다.
+
+## 3. 출력 형식
+- 출력 형식은 다음 포맷을 따릅니다.
+```json
+{
+    "movie_name": [영화 이름],
+    "year": [개봉 연도],
+    "genre": [장르],
+    "reason": [추천 이유]
+}
+```
+"""
+
+# 1에서 만든프롬프트를 활용하여 답변 받고 답변을 JSON으로 파싱하여 dict 형태로 반환
+def generate_movie_recommendation(genre: str, temperature: float = 1.0) ->dict:
+    """
+    특정 장르에 대한 영화 추천 데이터를 생성
+
+    Args:
+        genre: 영화 장르
+        temperature: 다양성 조절 파라미터 (0.0~2.0)
+
+    Returns:
+        구조화된 영화 추천 데이터
+    """
+	response = client.chat.completions.create(
+		model="gpt-5-mini",
+		messages=[
+			{"role": "system", "content": ST
+
+
+
+
+
+
+
+
+
+
+

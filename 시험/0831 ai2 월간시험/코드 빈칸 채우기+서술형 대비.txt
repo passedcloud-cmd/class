@@ -1,0 +1,303 @@
+01. [Prompt] [빈칸] 각 seed를 prompt에 삽입하세요.
+for seed in seed_tasks:
+    prompt = __(1)__"목표: {seed} 데이터 1개 생성"
+-정답: f
+
+
+02. [EDA] [빈칸] CSV를 DataFrame으로 읽으세요.
+df = pd.__(2)__("data.csv")
+-정답: read_csv
+
+
+03. [RAG] [빈칸] Loader에서 실제 문서 리스트를 얻으세요.
+loader = PyMuPDFLoader("lecture.pdf")
+documents = loader.__(3)__()
+-정답: load
+
+
+04. [EDA] [빈칸] 컬럼별 결측치 수를 출력하세요.
+print(df.__(4)__().sum())
+-정답: isnull
+
+
+05. [Prompt] [빈칸] LLM 응답의 JSON 문자열을 Python dict로 바꾸세요.
+item = json.__(5)__(raw.content)
+-정답: loads
+`json.loads()`는 JSON 문자열을 Python dict/list로 변환합니다. `dump`와 방향이 반대입니다
+
+
+06. [RAG] [빈칸] Document 리스트를 청크로 나누세요.
+chunks = splitter.__(6)__(documents)
+-정답: split_documents
+
+
+
+07. [EDA] [빈칸] 중복 행 개수를 구하세요.
+dup_count = df.__(7)__().sum()
+-정답: duplicated
+
+
+
+08. [RAG] [함정] Chroma 인자명을 채우세요.
+vectorstore = Chroma.from_documents(documents=chunks, __(8)__=embeddings)
+-정답: embedding
+
+
+09. [Prompt] [빈칸] item에 필수 key가 모두 있는지 검사하세요.
+required = {"instruction","input","response"}
+if required.__(9)__(item):
+    results.append(item)
+-정답: issubset
+`required.issubset(item)`은 required의 모든 key가 item에 포함되는지 검사합니다
+
+
+
+10. [EDA] [빈칸] 숫자형 컬럼만 선택하세요.
+numeric = df.__(10)__(include="number")
+-정답: select_dtypes
+
+
+
+11. [RAG] [빈칸] top-3 Retriever를 만드세요.
+retriever = vectorstore.as_retriever(__(11)__={"k": 3})
+-정답: search_kwargs
+
+
+12. [EDA] [한 줄] 성별별 target 평균을 구하세요.
+answer = __(12)__
+-정답: df.groupby("sex")["traget"].mean()
+`groupby`로 성별 묶기 → target 선택 → 평균 순서입니다
+
+
+
+13. [Prompt] [빈칸] 검증 통과 item을 리스트에 누적하세요.
+results.__(13)__(item)
+-정답: append
+
+
+
+14. [RAG] [빈칸] 질문으로 관련 문서를 검색하세요.
+retrieved_docs = retriever.__(14)__(question)
+-정답: invoke
+
+
+
+15. [EDA] [빈칸] 숫자형 상관행렬을 구하세요.
+corr = df.__(15)__(numeric_only=True)
+-정답: corr
+
+
+
+16. [EDA] [한 줄] target과의 상관을 내림차순으로 정렬하세요.
+target_corr = __(16)__
+-정답: corr["target"].sort_values(ascending=False)
+
+
+
+17. [RAG] [빈칸] 검색 문서 본문을 context로 합치세요.
+context = "\n\n".__(17)__(doc.page_content for doc in retrieved_docs)
+-정답: join
+
+
+
+
+18. [Prompt] [빈칸] results를 JSON 파일로 저장하세요.
+with open("out.json","w",encoding="utf-8") as f:
+    json.__(18)__(results, f, ensure_ascii=False, indent=2)
+-정답: dump
+
+
+19. [EDA] [한 줄] 여성 데이터만 선택하세요.
+female = __(19)__
+-정답: df[df["sex"] == "female"]
+
+
+20. [RAG] [빈칸] LLM 응답 객체에서 실제 답변 문자열을 출력하세요.
+answer = llm.invoke(prompt)
+print(answer.__(20)__)
+-정답: content
+
+
+
+21. [Prompt] [프롬프트 한 줄] label은 A/B/C만 허용한다는 제약을 쓰세요.
+constraint = __(21)__
+-정답: "제약: label은 반드시 A,B,C 중 하나만 사용하세요"
+
+
+
+
+22. [EDA] [오류 수정] 80점 이상이면서 math인 행을 고르세요.
+wrong = df[(df["score"] >= 80) and (df["subject"] == "math")]
+correct = __(22)__
+-정답: df[(df["score"]>=80) & (df["subjet"] =="math")]
+
+
+
+23. [RAG] [빈칸] 500자 청크, 50자 overlap으로 설정하세요.
+splitter = RecursiveCharacterTextSplitter(chunk_size=__(23a)__, chunk_overlap=__(23b)__)
+-정답: 500 / 50
+
+
+
+24. [EDA] [빈칸] age의 결측치를 age 중앙값으로 채우세요.
+median_age = df["age"].__(24a)__()
+df["age"] = df["age"].__(24b)__(median_age)
+-정답: median / fillna
+중앙값을 구한 뒤 `fillna(median_age)`로 결측을 채웁니다
+
+
+
+25. [Prompt] [빈칸] JSON 파싱 실패 시 다음 seed로 넘어가세요.
+try:
+    item = json.loads(raw.content)
+except json.JSONDecodeError:
+    __(25)__
+-정답: continue
+
+
+
+26. [RAG] [순서] 다음 4개를 Indexing 순서로 배열하세요.
+A Vector Store / B Loader / C Embedding / D Splitter
+순서 = __(26)__
+-정답: B D C A
+
+
+
+
+27. [EDA] [빈칸] NaN도 포함해 category 빈도를 세세요.
+freq = df["category"].value_counts(__(27)__=False)
+-정답: dropna
+
+
+28. [RAG] [빈칸] context와 question을 f-string prompt에 넣으세요.
+prompt = __(28)__"CONTEXT:\n{context}\nQUESTION:\n{question}"
+-정답: f
+
+
+29. [EDA] [빈칸] age 히스토그램 20 bins + KDE를 그리세요.
+sns.__(29)__(data=df, x="age", bins=20, kde=True)
+-정답: histplot
+
+
+30. [EDA] [빈칸] feature1과 target 산점도를 그리세요.
+sns.__(30)__(data=df, x="feature1", y="target")
+-정답: scatterplot
+
+
+
+
+31. [EDA] [빈칸] 상관계수를 숫자로 표시하는 heatmap을 그리세요.
+sns.heatmap(corr, __(31)__=True, fmt=".2f", cmap="coolwarm")
+-정답: annot
+
+
+32. [RAG] [빈칸] Document에서 본문 문자열을 꺼내세요.
+text = doc.__(32)__
+-정답: page_content
+
+
+
+33. [Prompt] [한 줄] 필수 key가 없으면 저장하지 않는 조건문을 작성하세요.
+if __(33)__:
+    results.append(item)
+-정답: required.issubset(item)
+필수 key가 모두 있을 때만 append하므로 생성 오류를 걸러냅니다
+
+
+
+34. [EDA] [체이닝] target 자신을 제외하고 절댓값 상관이 가장 큰 feature 이름을 구하세요.
+top_feature = (corr["target"].__(34a)__("target").__(34b)__().__(34c)__())
+-정답: drop / abs / idxmax
+자기 자신 r=1 제거 → 부호를 없애 강도 비교 → 가장 큰 항목의 이름 반환 순서입니다
+
+
+35. [RAG] [LangGraph] workflow를 실행 가능한 그래프로 만드세요.
+rag_graph = workflow.__(35)__()
+-정답: compile
+
+
+
+36. [RAG] [LangGraph] question을 State dict로 넣어 실행하세요.
+result = rag_graph.invoke(__(36)__)
+-정답: {"question": question}
+
+
+37. [Prompt] [빈칸] UTF-8 JSON 파일 쓰기 모드로 여세요.
+with __(37)__("synthetic.json", "w", encoding="utf-8") as f:
+    json.dump(results, f, ensure_ascii=False)
+-정답: open
+
+
+
+38. [EDA] [판단] 다음 중 보통 변수에 저장하지 않고 구조 확인 출력 자체가 목적인 호출을 쓰세요.
+__(38)__
+-정답: df.info()
+
+
+
+39. [RAG] [빈칸] 검색 결과 첫 Document의 앞 200자를 확인하세요.
+preview = retrieved_docs[0].__(39)__[:200]
+-정답: page_content
+
+
+
+40. [EDA] [빈칸] category 결측치를 최빈값으로 채우세요.
+mode_value = df["category"].__(40a)__()[0]
+df["category"] = df["category"].__(40b)__(mode_value)
+-정답: mode / fillna
+범주형 최빈값은 `.mode()[0]`, 그 값으로 `.fillna()` 합니다.
+
+
+01. Q. 데이터 생성을 위한 프롬프트에서 “목-맥-제-형-예”를 설명하시오.
+모범답안: 목표는 생성할 데이터의 목적, 맥락은 도메인/상황, 제약은 길이·금지사항·허용 label, 형식은 JSON/표 같은 schema, 예시는 원하는 입력-출력 모양이다. 이 요소를 명시하면 출력이 일관되고 후처리·검증이 쉬워진다.
+
+02. Q. Seed → Prompt → Generate → Parse → Validate → Save 흐름을 설명하시오.
+모범답안: 소수 seed를 출발점으로 prompt를 만들고 LLM이 새 sample을 생성한다. 응답 문자열을 JSON/dict로 파싱한 뒤 필수 key·중복·길이 등을 검증하고, 통과한 결과만 누적해 JSON/CSV로 저장한다.
+
+03. Q. LLM 에게 JSON 출력을 요구했는데도 validation이 필요한 이유는?
+모범답안: LLM 출력은 형식 오류, key 누락, 허용되지 않은 label, 중복·편향이 생길 수 있다. 따라서 모델의 자연어 지시 준수를 신뢰만 하지 말고 프로그램적으로 parse/schema 검증을 거쳐야 한다.
+
+04. Q. EDA 의 목적과 대표 순서를 설명하시오.
+모범답안: EDA는 모델링 전에 데이터의 구조·분포·품질·변수 관계를 탐색하는 단계다. Load 후 head/shape/info로 구조를 보고, isnull/duplicated 와 describe/value_counts 로 품질·분포를 확인하고, groupby/corr/시각화로 관계를 해석한다.
+
+05. Q. 상관계수의 부호와 절댓값을 각각 어떻게 해석하는가?
+모범답안: 부호는 관계 방향을 나타내 +는 같은 방향, -는 반대 방향이다. 절댓값은 선형 관계의 강도를 나타내며 1에 가까울수록 강하고 0에 가까울수록 선형 관계가 약하다.
+
+06. Q. 상관계수가 0이면 두 변수 사이에 관계가 전혀 없다고 할 수 있는가?
+모범답안: 아니다. Pearson 상관계수는 주로 선형 관계를 측정하므로 0 근처여도 곡선형 같은 비선형 관계가 있을 수 있다. 산점도와 도메인 지식을 함께 확인해야 한다.
+
+07. Q. 상관관계와 인과관계의 차이를 설명하시오.
+모범답안: 상관은 두 변수가 함께 움직이는 통계적 경향이다. 한 변수가 다른 변수의 원인임을 뜻하지 않으며 제3의 변수, 선택 편향, 우연 등이 원인이 될 수 있어 추가 검증이 필요하다.
+
+08. Q. 설명변수끼리 상관이 지나치게 높으면 무엇을 의심하는가?
+모범답안: 다중공선성을 의심한다. 서로 비슷한 정보를 가진 설명변수가 함께 들어가면 회귀계수의 추정과 해석이 불안정해질 수 있다.
+
+09. Q. Histogram 과 Scatterplot 의 차이를 설명하시오.
+모범답안: Histogram은 한 변수의 값이 어느 구간에 얼마나 분포하는지 본다. Scatterplot은 두 수치형 변수의 관계, 방향성, 이상치, 비선형 패턴을 본다.
+
+10. Q. 결측치를 무조건 평균으로 채우면 안 되는 이유는?
+모범답안: 분포가 치우치거나 이상치가 많으면 평균이 대표값으로 부적절할 수 있다. describe/그래프를 확인한 뒤 수치형은 평균/중앙값, 범주형은 최빈값, 또는 삭제 등을 판단해야 한다.
+
+11. Q. RAG 의 Indexing 과 Querying을 구분하여 설명하시오.
+모범답안: Indexing은 문서를 Load → Split → Embed → Vector Store에 저장하는 준비 단계로 문서가 안 바뀌면 보통 한 번 수행한다. Querying은 질문마다 query embedding을 만들고 Retriever로 Top-k 청크를 가져와 context로 넣고 LLM이 답을 생성한다.
+
+12. Q. RAG 에서 Chunking이 필요한 이유와 overlap의 역할을 설명하시오.
+모범답안: 문서 전체를 한 벡터로 만들면 특정 문단 의미가 희석되고 context가 길어진다. 너무 작은 청크는 문맥이 끊긴다. overlap 은 청크 경계에서 중요한 문장이 잘리는 것을 완화하지만 너무 크면 중복과 noise가 늘 수 있다.
+
+13. Q. RAG 답변이 틀렸을 때 가장 먼저 무엇을 확인해야 하는가?
+모범답안: Retriever가 올바른 문서를 Top-k로 가져왔는지 먼저 확인한다. 검색 단계가 실패하면 생성 모델이 좋아도 잘못된 context 를 근거로 오답을 만들 수 있다.
+
+14. Q. RAG 와 Fine-tuning 의 차이를 설명하시오.
+모범답안: RAG는 보통 weight를 바꾸지 않고 외부 문서를 검색해 최신/사내 사실을 context로 공급한다. Fine-tuning은 모델 파라미터나 adapter를 학습해 특정 행동·스타일·형식을 몸에 익히는 방법이다.
+
+15. Q. RAG 의 대표적인 한계를 한 가지 이상 설명하시오.
+모범답안: 검색이 실패하거나 관련 없는 문서가 많이 들어오면 context pollution으로 답이 틀릴 수 있다. chunk 크기, embedding, k, query 표현, 문서 충돌 등 검색 품질을 관리해야 한다.
+
+16. Q. 코드 빈칸 문제에서 반환 타입을 보는 이유는?
+모범답안: 다음 코드가 기대하는 객체의 메서드/속성이 정답을 제한하기 때문이다. 예를 들어 `.content`가 뒤에 있으면 앞의 결과는 AIMessage류, `.page_content`를 쓰면 Document, `.corr()`는 DataFrame을 기대한다.
+
+17. Q. 산점도에서 점들이 우상향하지만 몇 개의 점이 멀리 떨어져 있을 때 어떻게 서술하는가?
+모범답안: 전반적으로 양의 관계가 보이지만 이상치가 존재한다고 쓴다. 이상치가 상관계수와 회귀 결과에 영향을 줄 수 있으므로 해당 관측치를 확인해야 한다.
+
+18. Q. Heatmap 에서 target과 A의 r=-0.85, B의 r=+0.45라면 어느 feature가 더 강한 관련이 있는가?
+모범답안: A가 더 강하다. 강도는 부호가 아니라 절댓값을 비교하므로 |-0.85| > |0.45|이다. A는 강한 음의 관계, B는 상대적으로 약한 양의 관계다

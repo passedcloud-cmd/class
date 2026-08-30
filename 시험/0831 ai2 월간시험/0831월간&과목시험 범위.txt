@@ -26,6 +26,7 @@ K-means와 계층적 군집
 정밀도 계산
 분류 문제
 비선형 활성화 함수
+-10
 RLHF 강화학습
 RLHF 학습 절차
 경사하강법 갱신 방향
@@ -36,6 +37,7 @@ CNN·FC 파라미터 계산
 문장 임베딩과 코사인 유사도
 텍스트 파운데이션 모델
 LLM Agent의 특성
+-20
 지시 학습 데이터
 1×1 Convolution의 특징
 Zero-shot CoT
@@ -46,6 +48,7 @@ Knowledge Distillation
 멀티모달 비디오 생성
 CBOW와 Skip-gram
 RNN 기울기 소실
+-30
 LSTM 상태 구조
 사전학습과 파인튜닝
 Max Pooling
@@ -56,6 +59,7 @@ VLM 학습 절차
 문서 이해 VLM
 Small VLM
 RAG
+-40
 LLM-as-Judge 평가 편향
 단일 태스크 파인튜닝
 선형회귀 계수 해석
@@ -66,6 +70,7 @@ RLHF 학습 파이프라인
 Few-shot CoT
 배포 환경별 경량화 전략
 저비트 Quantization
+-50
 Teacher–Student 지식 증류
 모델 경량화 Trade-off
 OOD와 Adaptive Sensing
@@ -76,3 +81,4 @@ AI Agent 동작
 Distribution Shift
 AI Agent의 Tool 활용
 도메인 특화 AI
+-60
