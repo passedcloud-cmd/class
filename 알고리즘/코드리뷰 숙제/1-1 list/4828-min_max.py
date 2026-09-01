@@ -4,28 +4,26 @@ sys.stdin = open('4828-min_max.txt')
 
 T = int(input()) #3
 
-count = 1
-
-for _ in range(T): # T=3번 반복
+for t in range(T): # T=3번 반복
     N = int(input())
     arr = list(map(int, (input().split())))
-    print(arr)
-    # print(N)
-    for _ in range(N):
-        for j in arr:
-            min_num = arr[0]
-            max_num = arr[0]
 
+    for _ in range(N):
+        # 최솟값과 최댓값은 임의로 첫 번째 값으로 배정
+        min_num = arr[0]
+        max_num = arr[0]
+        for j in arr:
+            # 반복문을 돌면서 최솟값과 최댓값을 갱신
             if min_num > j:
                 min_num = j
 
             if max_num < j:
                 max_num = j
-
-    print(f"#{count} {max_num - min_num}")
-    count += 1
+    print(f"#{t+1} {max_num - min_num}")
 
 
+# 오답노트 
+# min_num = arr[0]와 max_num = arr[0]가 for j in arr: 안에 있어서 한 바퀴 돌 때마다 값이 리셋됨.
 
 # 정답 예시
 #1 630739
