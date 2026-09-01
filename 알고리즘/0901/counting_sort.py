@@ -24,27 +24,27 @@ def counting_sort(input_arr, k):
     #   힌트) 숫자의 '값'을 그대로 인덱스로 쓸 것이다. 0부터 k까지 담으려면 몇 칸이 필요할까?
     #   힌트) [0] * 칸수
     # TODO: counting_arr = ____
-    counting_arr = ______
+    counting_arr = [0] * (k+1)
 
     # [실습 포인트 2] 빈도수 기록
     #   힌트) input_arr를 한 번 훑으면서, 그 숫자에 해당하는 칸을 1씩 올린다.
     # TODO: for num in input_arr:
     #           ____
     for num in input_arr:
-        ______
+        counting_arr[num] += 1
 
     # [실습 포인트 3] 누적 합 계산
     #   힌트) 앞칸의 값을 내 칸에 더한다. 이러면 각 칸은 "이 숫자가 들어갈 마지막 방 번호"가 된다.
     #   힌트) 0번 칸은 앞이 없으므로 1번 칸부터 시작!
     # TODO: for i in range(____, ____):
     #           ____
-    for i in ______:
-        ______
+    for i in range(1, k+1):
+        counting_arr[i] += counting_arr[i-1]
 
     # [실습 포인트 4] 결과 배열 만들기
     #   힌트) 원본과 같은 개수만큼 0으로 채운 리스트
     # TODO: result_arr = ____
-    result_arr = ______
+    result_arr = [0] * len(input_arr)
 
     # [실습 포인트 5] 역순 순회 & 배치  ★ 이 실습의 하이라이트 ★
     #   힌트) 왜 reversed()일까? -> 같은 값이 여러 개일 때 '원래 순서'를 지키기 위해서(안정 정렬).
@@ -53,9 +53,9 @@ def counting_sort(input_arr, k):
     # TODO: for num in reversed(input_arr):
     #           ____   # 누적 합 -1
     #           ____   # result_arr의 해당 위치에 num 배치
-    for num in ______:
-        ______
-        ______
+    for num in reversed(input_arr):
+        counting_arr[num] -= 1
+        result_arr[counting_arr[num]] = num
 
     return result_arr
 
