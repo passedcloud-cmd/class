@@ -1,0 +1,94 @@
+import sys
+
+sys.stdin = open("4836-색칠하기.txt")
+
+# 칸이 칠해졌는지 무슨색인지 고려하는 방법1
+# T = int(input())
+# for t in range(T):
+#     purple_count = 0
+
+#     # 임의로 (10, 10) 행렬 만듦
+#     arr = list([0] * 10 for _ in range(10)) 
+
+#     # N = 색을 칠할 영역
+#     N = int(input()) 
+#     for i in range(N):
+#         r1, c1, r2, c2, color = map(int, input().split())
+
+#         # 순회하기
+#         for r in range(r1, r2 + 1):
+#             for c in range(c1, c2 + 1):
+#                 # case1: 칸이 빈칸도 아니고 같은 색도 아님 -> 다른 색이 칠해짐
+#                 if arr[r][c] != 0 and arr[r][c] != color:
+#                     # 그리고 보라색이 아님 
+#                     if arr[r][c] != 3:
+#                         purple_count += 1
+#                         arr[r][c] =3
+#                 # case2: 그 외의 경우 - 빈칸이거나 같은 색이면
+#                 else:
+#                     arr[r][c] = color #색을 칠해버림 
+
+#     print(f'#{t+1} {purple_count}')
+
+
+###################################################################
+
+# 안 보고 다시 시작
+T = int(input())
+
+for t in range(T):
+	# 임의로 값이 0인 행렬 10x10을 만듦
+    arr = [[0] * 10 for _ in range(10)]
+    
+    # 보라색 칸의 개수는 처음에 0
+    purple_count = 0
+    
+    # 색을 칠할 영역의 개수 N
+    N = int(input())
+    for _ in range(N):
+        # 색칠 영역의 시작점과 끝점 정하기
+        r1, c1, r2, c2, color = map(int, input().split())
+    	
+        # 색 칠하기
+        for r in range(r1, r2 + 1): # 행 중심으로 순회하며 칠하기
+            for c in range(c1, c2 +1):
+                # 칸이 0이거나 같은 색이면 같은색으로 칠하기
+                if arr[r][c] == 0 or arr[r][c] == color:
+                    arr[r][c] = color
+                # 칸이 0이 아니고 다른 색인 경우
+                else:
+                    # # 칸이 이미 보라색이라면 그냥 넘어가기
+                    # if arr[r][c] == 3:
+                    #     continue
+                    # # 칸이 다른 색이라면 보라색으로 만들고 보라색 개수 +1
+                    # else:
+                        arr[r][c] = 3
+                        purple_count +=1
+                           
+    print(f'#{t+1} {purple_count}')
+
+
+
+# 값을 누적시켜서 3이면 보라색으로 판정하는 방법 2
+
+
+
+
+# 정답 예시
+#1 4
+#2 5
+#3 7
+
+# 입력 예시
+# 3
+# 2
+# 2 2 4 4 1
+# 3 3 6 6 2
+# 3
+# 1 2 3 3 1
+# 3 6 6 8 1
+# 2 3 5 6 2
+# 3
+# 1 4 8 5 1
+# 1 8 3 9 1
+# 3 2 5 8 2
