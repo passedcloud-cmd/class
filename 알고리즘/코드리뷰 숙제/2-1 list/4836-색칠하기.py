@@ -50,8 +50,9 @@ for t in range(T):
         r1, c1, r2, c2, color = map(int, input().split())
     	
         # 색 칠하기
-        for r in range(r1, r2 + 1): # 행 중심으로 순회하며 칠하기
+        for r in range(r1, r2 + 1): # 행 중심으로 순회
             for c in range(c1, c2 +1):
+                
                 # 칸이 0이거나 같은 색이면 같은색으로 칠하기
                 if arr[r][c] == 0 or arr[r][c] == color:
                     arr[r][c] = color
@@ -69,7 +70,6 @@ for t in range(T):
 
 
 
-# 값을 누적시켜서 3이면 보라색으로 판정하는 방법 2
 
 
 
