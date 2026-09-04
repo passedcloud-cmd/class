@@ -1,42 +1,77 @@
-## 델타 이동
+# ## 델타 이동
 
+# import sys
+# sys.stdin = open("1954-달팽이숫자.txt")
+
+# T = int(input())
+
+# # 방향키 설정: 우 하 좌 상
+# # 왜나하면 예) 우우우 - 하하하 - 좌좌좌 - 상상 이런 식으로 움직일 거니까.
+# dr = [0, 1, 0, -1]
+# dc = [1, 0, -1, 0]
+
+# for tc in range(1, T + 1):
+#     N = int(input()) # N은 행렬의 크기
+#     # 크기가 N X N이고 0으로 채워진 행렬 만들기
+#     arr = [[0] * N for _ in range(N)]
+
+#     # 시작점 [0, 0]과 방향 0
+#     r, c, direction = 0, 0, 0
+
+#     for num in range(1, (N * N + 1)):
+#         arr[r][c] = num
+        
+#         # 다음 row와 다음 column
+#         nr = r + dr[direction]
+#         nc = c + dc[direction]
+        
+#         if not ((0 <= nr < N) and (0 <= nc < N) and (arr[nr][nc] == 0)):
+#             direction = (direction + 1) % 4 # 0, 1, 2, 3 반복 
+#             nr = r + dr[direction]
+#             nc = c + dc[direction]
+
+#         r = nr
+#         c = nc
+
+#     print(f'#{tc}')
+#     for row in arr:
+#         print(*row)
+
+############################################################
+# 다시 풀어보기
 import sys
-sys.stdin = open("1954-달팽이숫자.txt")
+sys.stdin = open('1954-달팽이숫자.txt')
 
 T = int(input())
+for test_case in range(1, T + 1):
+    N = int(input())
 
-# 방향키 설정: 우 하 좌 상
-# 왜나하면 예) 우우우 - 하하하 - 좌좌좌 - 상상 이런 식으로 움직일 거니까.
-dr = [0, 1, 0, -1]
-dc = [1, 0, -1, 0]
+    # 방향키 우하좌상
+    dr = [0, 1 , 0, -1]
+    dc = [1, 0, -1, 0]
 
-for tc in range(1, T + 1):
-    N = int(input()) # N은 행렬의 크기
-    # 크기가 N X N이고 0으로 채워진 행렬 만들기
-    arr = [[0] * N for _ in range(N)]
+    # 시작점과 방향 초기화
+    r1, c1, direction = 0, 0, 0
 
-    # 시작점 [0, 0]과 방향 0
-    r, c, direction = 0, 0, 0
+    # 다음 이동
+    nr = r1 + dr[direction]
+    nc = c1 + dc[direction]
 
-    for num in range(1, (N * N + 1)):
-        arr[r][c] = num
-        
-        # 다음 row와 다음 column
-        nr = r + dr[direction]
-        nc = c + dc[direction]
-        
-        if not ((0 <= nr < N) and (0 <= nc < N) and (arr[nr][nc] == 0)):
-            direction = (direction + 1) % 4 # 0, 1, 2, 3 반복 
-            nr = r + dr[direction]
-            nc = c + dc[direction]
+    # 행 고정 이동
+    for r in range(N):
+        for c in range(N):
+            
 
-        r = nr
-        c = nc
 
-    print(f'#{tc}')
-    for row in arr:
-        print(*row)
 
+
+
+
+
+
+
+
+##############################################################
 ## 테두리만 도는 방법
 
 # import sys

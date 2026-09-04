@@ -12,13 +12,31 @@ for test_case in range(1, T + 1):
     for _ in range(N):
         arr.append(list(map(int, input().split())))
 
-    # 더하기 영역에서 
+    max_num = arr[0][0] + arr[0][1] + arr[1][0] + arr[1][1] # 최댓값 임의로 정함
 
-
-    # 배열을 순회하며 더하기 영역을 찾기
-    # N - M + 1 까지만 이동해야 함. 
+    # 더하기 영역에서 시작점-끝점 영역을 찾아서 그 영역 내 값 더하기
+    # N - M + 1 까지만 이동해야 함. 그 밖은 영역 벗어남 
     for r in range(N - M + 1):
         for c in range(N - M + 1):
+
+            # 한 칸씩 이동할 때마다 M x M 파리채 영역 합을 초기화
+            sum_for_M = 0 
+
+            # 시작점과 끝점 
+            r1, c1 = r, c
+            r2, c2 = r + M - 1, c + M -1
+
+            # M x M 영역 더하기 
+            for i in range(r1, r2 + 1):
+                for j in range(c1, c2 + 1):
+                    sum_for_M += arr[i][j]
+            
+            # 최댓값 구하기
+            if sum_for_M > max_num:
+                max_num = sum_for_M
+
+    print(f'#{test_case} {max_num}')
+    
 
 
     
