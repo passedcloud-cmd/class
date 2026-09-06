@@ -1,6 +1,6 @@
 import sys
 
-sys.stdin = open('sample_input.txt')
+sys.stdin = open('4835_구간합.txt')
 
 T = int(input()) #3
 

@@ -40,36 +40,41 @@
 ############################################################
 # 다시 풀어보기
 import sys
-sys.stdin = open('1954-달팽이숫자.txt')
-
+sys.stdin = open("1954-달팽이숫자.txt")
 T = int(input())
-for test_case in range(1, T + 1):
+
+for test_case in range(1, T+1):
+    # 0으로 채워진 N x N 행렬 만들기
     N = int(input())
+    arr = [[0] * N for _ in range(N)]
 
     # 방향키 우하좌상
-    dr = [0, 1 , 0, -1]
-    dc = [1, 0, -1, 0]
+    dr = [0, 1, 0, -1]
+    dc = [1, 0, -1 ,0]
 
-    # 시작점과 방향 초기화
-    r1, c1, direction = 0, 0, 0
+    # 시작점과 방향키 리셋
+    r, c, direction = 0, 0, 0    
 
-    # 다음 이동
-    nr = r1 + dr[direction]
-    nc = c1 + dc[direction]
+    # 이동하면서 칸에 num 부여
+    for num in range(1, N * N + 1):
+        arr[r][c] = num
 
-    # 행 고정 이동
-    for r in range(N):
-        for c in range(N):
-            
+        # 다음 이동할 칸의 좌표
+        nr = r + dr[direction]
+        nc = c + dc[direction]
 
+        # 경계 체크 후 방향 변경
+        if not (0 <= nr < N and 0 <= nc < N and arr[nr][nc] == 0):
+            direction = (direction + 1) % 4
+            nr = r + dr[direction]
+            nc = c + dc[direction]        
 
+        r = nr
+        c = nc
 
-
-
-
-
-
-
+    print(f'#{test_case}')
+    for row in arr:
+        print(*row)
 
 ##############################################################
 ## 테두리만 도는 방법

@@ -1,3 +1,34 @@
+import sys
+sys.stdin = open("4843-특별한정렬.txt")
+
+T =int(input())
+
+def bubble_sort(input_arr, number):
+    for i in range(0, number - 1):
+        for j in range(0,number - 1 - i):
+            if input_arr[j] < input_arr[j + 1]:
+                input_arr[j], input_arr[j + 1] = input_arr[j + 1], input_arr[j]
+
+    return input_arr
+
+
+for test_case in range(1, T + 1):
+    N = int(input())    
+    arr = list(map(int, input().split()))
+    bubble_sorted_arr = bubble_sort(arr, N)
+    # print(bubble_sorted_arr)
+    result_arr = []
+    for i in range(N//2):
+        result_arr.append(bubble_sorted_arr[i])
+        result_arr.append(bubble_sorted_arr[-i-1])
+
+    result = " ".join([str(n) for n in result_arr[:10]])
+    print([str(n) for n in result_arr[:10]])
+    print(f'#{test_case} {result}')
+
+
+
+
 # import sys
 # sys.stdin = open("4843-특별한정렬.txt")
 
@@ -14,63 +45,25 @@
 
 #         # 인덱스가 0이거나 짝수(0도 짝수 취급)면 큰 수 순서대로 배열  
 #         if i % 2 == 0:
-#             for j in range(i, N):
-#                 max_index = i # 최대값의 인덱스는 구간의 첫 번째로 임의 배정 
+#             max_index = i # 최대값의 인덱스는 구간의 첫 번째로 임의 배정 
+#             for j in range(i + 1, N):
 #                 if arr[max_index] < arr[j]:
 #                     max_index = j
-#                     # 더 큰 값을 찾았다면 위치 바꾸기
-#                     arr[i], arr[max_index] = arr[max_index], arr[i]
+#             # 더 큰 값을 찾았다면 위치 바꾸기
+#             arr[i], arr[max_index] = arr[max_index], arr[i]
 
 #         # 인덱스가 홀수면 작은 수 순서대로 배열
 #         else:
-#             for k in range(i, N):
-#                 min_index = i # 최소값의 인덱스는 구간의 첫 번째로 임의 배정 
+#             min_index = i # 최소값의 인덱스는 구간의 첫 번째로 임의 배정 
+#             for k in range(i + 1, N):
 #                 if arr[min_index] > arr[k]:
 #                     min_index = k
-#                     # 더 큰 값을 찾았다면 위치 바꾸기
-#                     arr[i], arr[min_index] = arr[min_index], arr[i]         
+#             # 더 작은 값을 찾았다면 위치 바꾸기
+#             arr[i], arr[min_index] = arr[min_index], arr[i]         
 
-#     # arr는 리스트
-#     # 리스트에서 값을 꺼내고 쉼표로 잇기
-#     result = ", ".join(str(n) for n in arr[:10])
+#     # arr는 리스트. 리스트에서 값을 꺼내고 잇기
+#     result = " ".join(str(n) for n in arr[:10]) # 출력값 개수가 10개이므로 arr[:10]
 #     print(f'#{tc} {result}')    
-
-
-import sys
-sys.stdin = open("4843-특별한정렬.txt")
-
-T =int(input())
-
-for tc in range(1, T + 1):
-    # N은 숫자 개수 
-    N = int(input())
-
-    arr = list(map(int, input().split()))
-
-    # 값을 2개씩 비교하니까 N-1 입력. 마지막에 N-2번째를 N-1(마지막)번째와 비교하니까. 
-    for i in range(0, N-1):
-
-        # 인덱스가 0이거나 짝수(0도 짝수 취급)면 큰 수 순서대로 배열  
-        if i % 2 == 0:
-            max_index = i # 최대값의 인덱스는 구간의 첫 번째로 임의 배정 
-            for j in range(i + 1, N):
-                if arr[max_index] < arr[j]:
-                    max_index = j
-            # 더 큰 값을 찾았다면 위치 바꾸기
-            arr[i], arr[max_index] = arr[max_index], arr[i]
-
-        # 인덱스가 홀수면 작은 수 순서대로 배열
-        else:
-            min_index = i # 최소값의 인덱스는 구간의 첫 번째로 임의 배정 
-            for k in range(i + 1, N):
-                if arr[min_index] > arr[k]:
-                    min_index = k
-            # 더 작은 값을 찾았다면 위치 바꾸기
-            arr[i], arr[min_index] = arr[min_index], arr[i]         
-
-    # arr는 리스트. 리스트에서 값을 꺼내고 쉼표로 잇기
-    result = " ".join(str(n) for n in arr[:10]) # 출력값 개수가 10개이므로 arr[:10]
-    print(f'#{tc} {result}')    
 
 
 
