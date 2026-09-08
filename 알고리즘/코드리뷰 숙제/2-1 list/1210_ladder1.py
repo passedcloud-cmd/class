@@ -1,118 +1,134 @@
+# # 위에서 아래로 
+# import sys
+# sys.stdin = open('1210_ladder1.txt')
+# T = 10 # 문제에 주어짐
+# for test_case in range(1, T + 1):
+#     # N은 test case 번호
+#     N = int(input())
+#     # ladder 만들기
+#     ladder = [list(map(int, input().split())) for _ in range(100)]
+
+#     # x=0 row에서 c를 0~99까지 훑고
+#     for c in range(100):
+#         # 시작점 r, c좌표
+#         start_c = c
+#         r = 0
+
+#         # ladder[0][c] == 1인 지점이 있으면 시작
+#         if ladder[0][c] == 1:
+
+#             # x =99까지 아래로 이동
+#             while r < 99: 
+#                 #좌측에 길이 있으면 왼쪽이 경계선이거나 0일 때까지 -1씩(왼쪽으로) 이동
+#                 if 0 <= c - 1 < 100 and ladder[r][c - 1] == 1:
+#                     while 0 <= c - 1 < 100 and ladder[r][c - 1] == 1:
+#                         c -= 1
+
+#                 #우측에 길이 있으면 오른쪽이 경계선이거나 0일 때까지 +1씩(오른쪽으로) 이동
+#                 elif 0 <= c + 1 < 100 and ladder[r][c + 1] == 1:
+#                     while 0 <= c + 1 < 100 and ladder[r][c + 1] == 1:
+#                         c += 1
+
+#                 #좌측이나 우측으로 갔든 안 갔든 아래쪽으로 한 칸씩 이동
+#                 r += 1
+
+#         # 2인 지점을 찾았으면 break for c
+#         if ladder[r][c] == 2:
+#             result = start_c
+#             break # for c
+
+#         else:
+#             result = -1
+
+#     print(f'#{N} {result}')
+
+    
+
+# # 아래에서 위로
+# import sys
+# sys.stdin = open('1210_ladder1.txt')
+# T = 10 # 문제에 주어짐
+# for test_case in range(1, T + 1):
+#     # N은 test case 번호
+#     N = int(input())
+#     # ladder 만들기
+#     ladder = [list(map(int, input().split())) for _ in range(100)]
+
+    
+#     # ladder[99][c] = 2인 좌표를 찾기
+#     # c를 0부터 99까지 훑기
+#     for c in range(100):
+#         if ladder[99][c] == 2:
+#             # 시작점 찾음
+#             r = 99
+#             c = c
+#             # 시작점을 찾았으니 break for c
+#             break #for c
+
+#     # ladder[99][end_c]부터 위로 올라가야 함
+#     # r = 0까지 이동
+#     while r > 0 :
+#         # 왼쪽에 길이 있는 경우
+#         if 0 <= c - 1 < 100 and ladder[r][c - 1] == 1:
+#             while 0 <= c - 1 < 100 and ladder[r][c - 1] == 1:
+#                 c -= 1
+
+#         # 오른쪽에 길이 있는 경우
+#         elif 0 <= c + 1 < 100 and ladder[r][c + 1] == 1:
+#             while 0 <= c + 1 < 100 and ladder[r][c + 1] == 1:
+#                 c += 1
+
+#         # 왼쪽으로 갔든 안 갔든 위로 한 칸 이동
+#         r -= 1
+
+#     print(f'#{test_case} {c}')
+
+
+# 위에서 아래로, 델타 
 import sys
 sys.stdin = open("1210_ladder1.txt")
+T = 10 # 문제에 명시
 
-def find_destination(input_arr, start_y):
-    x = 0
-    y = start_y
-
-    if input_arr[x][y] == 1:
-        while x < 99:
-            # 좌측
-            if 0 <= y - 1 and input_arr[x][y-1] == 1:
-                while y - 1 >= 0 and input_arr[x][y-1] == 1:
-                    y -= 1
-            # 우측
-            elif y + 1 < 100 and input_arr[x][y+1] == 1:
-                while y + 1 < 100 and input_arr[x][y+1] == 1:
-                    y += 1
-            
-            x += 1 #좌나 우로 이동했으면 무조건 아래로 내려가야 함. 그렇지 않으면 다시 좌우로 이동하면서 무한 루프에 빠짐
-
-    if input_arr[x][y] == 2:
-        return start_y
-
-    elif input_arr[x][y] != 2:
-        return -1
-
-# 문제에 명시
-T = 10
+# 방향키 좌우상
+dr = [0, 0, -1]
+dc = [-1, 1, 0]
 
 for test_case in range(1, T + 1):
-    # test_case 번호 N
+    # N은 test_case 번호
     N = int(input())
+    ladder = [list(map(int, input().split())) for _ in range(100)]
+    # end_c 찾기. 
+    for c in range (100):
+        if ladder[99][c] == 2:
+            # 도착점
+            r = 99
+            c = c
+            break #for c
 
-    # arr 만들기. 100 x 100
-    arr = [list(map(int, input().split())) for _ in range(100)]
+    # 좌,우,상 돌면서 1인 지점으로 나아가기
+    # r = 0일 때까지 계속 이동
+    while r > 0:
+        # 다음으로 이동할 nr, nc 구하기
+        for i in range(3):
+            nr = r + dr[i]
+            nc = c + dc[i]
 
-    for row in range(100):
-        result = find_destination(arr, row)
-        if result != -1:
-            break
+            # 경계와 ladder[nr][nc] 값 체크
+            if 0 <= nr < 100 and 0 <= nc < 100 and ladder[nr][nc] == 1:
+                # 이전 길로 가지 않게 걸어온 길은 0으로 처리
+                ladder[r][c] = 0
+                r = nr
+                c = nc
 
-    print(f'#{N} {result}')
+    print(f'#{N} {c}')
+            
 
-
-
-
-
-
-
-
-
-
-
-
-# import sys
-# sys.stdin = open("1210_ladder1.txt")
-#
-# def find_destination(input_arr, start_c):
-#     """x = 0, y = start_y에서 출발하여 x = 99, y =2인 곳까지 내려가기"""
-#     result = -1   # 미리 기본값 설정!
-#
-#     # 방향키 설정 좌, 우, 하
-#     dr = [0, 0, 1]
-#     dc = [-1, 1, 0]
-#
-#     # 시작점 초기화
-#     r = 0
-#     c = start_c
-#
-#     # 시작점 input_arr[0][start_c] == 1일 때만 시작한다는 조건
-#     if input_arr[0][start_c] == 1:
-#         # x = 99일 때 멈추기
-#         while r < 99:
-#             # 세 방향 좌, 우, 하 돌면서 나아갈 방향 모색
-#             for i in range(3):
-#                 # 다음 방향
-#                 nr = r + dr[i]
-#                 nc = c + dc[i]
-#                 # 경계 체크
-#                 if 0 <= nr < 100 and 0 <= nc < 100 and arr[nr][nc] == 1:
-#                     # 기존 자리는 0으로 처리해서 되돌아가지 않도록 함
-#                     arr[r][c] = 0
-#                     r, c = nr, nc
-#                     break # for i
-#
-#         # arr[99][c] == 2이면 시작점 c를 출력하고 break. 그렇지 않으면 -1 출력
-#         if arr[99][c] == 2:
-#             result = start_c
-#
-#     return result
-#
-# T = 10 # 문제에 명시
-#
-# for test_case in range(1, T + 1):
-#     # test_case 번호 N
-#     N = int(input())
-#
-#     # arr 만들기. 100 x 100
-#     arr = [list(map(int, input().split())) for _ in range(100)]
-#
-#     # 0 <= c < 100 반복
-#     for n in range(100):
-#         y_pose = find_destination(arr, n)
-#         if y_pose != - 1:
-#             answer_c = y_pose
-#             break
-#
-#     print(answer_c)
-
-
-        
     
 
 
-                
+
+
+
 
 
 
