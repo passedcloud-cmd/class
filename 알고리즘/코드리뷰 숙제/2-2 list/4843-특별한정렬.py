@@ -1,30 +1,84 @@
 import sys
 sys.stdin = open("4843-특별한정렬.txt")
-
-T =int(input())
-
-def bubble_sort(input_arr, number):
-    for i in range(0, number - 1):
-        for j in range(0,number - 1 - i):
-            if input_arr[j] < input_arr[j + 1]:
-                input_arr[j], input_arr[j + 1] = input_arr[j + 1], input_arr[j]
-
-    return input_arr
-
-
+T = int(input())
 for test_case in range(1, T + 1):
-    N = int(input())    
+    # N은 정수의 개수
+    N = int(input())
     arr = list(map(int, input().split()))
-    bubble_sorted_arr = bubble_sort(arr, N)
-    # print(bubble_sorted_arr)
-    result_arr = []
-    for i in range(N//2):
-        result_arr.append(bubble_sorted_arr[i])
-        result_arr.append(bubble_sorted_arr[-i-1])
 
-    result = " ".join([str(n) for n in result_arr[:10]])
-    print([str(n) for n in result_arr[:10]])
-    print(f'#{test_case} {result}')
+    # 먼저 arr을 순서대로 정렬
+    # 버블 소트
+    for i in range(0, len(arr) - 1):
+        for j in range
+            if arr[i] < arr[i + 1]:
+
+    print(arr)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# import sys
+# sys.stdin = open("4843-특별한정렬.txt")
+#
+# T =int(input())
+#
+# def bubble_sort(input_arr, number):
+#     for i in range(0, number - 1):
+#         for j in range(0,number - 1 - i):
+#             if input_arr[j] < input_arr[j + 1]:
+#                 input_arr[j], input_arr[j + 1] = input_arr[j + 1], input_arr[j]
+#
+#     return input_arr
+#
+#
+# for test_case in range(1, T + 1):
+#     N = int(input())
+#     arr = list(map(int, input().split()))
+#     bubble_sorted_arr = bubble_sort(arr, N)
+#     # print(bubble_sorted_arr)
+#     result_arr = []
+#     for i in range(N//2):
+#         result_arr.append(bubble_sorted_arr[i])
+#         result_arr.append(bubble_sorted_arr[-i-1])
+#
+#     result = " ".join([str(n) for n in result_arr[:10]])
+#     print([str(n) for n in result_arr[:10]])
+#     print(f'#{test_case} {result}')
 
 
 

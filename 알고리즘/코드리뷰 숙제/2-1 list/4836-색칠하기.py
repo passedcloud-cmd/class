@@ -1,3 +1,58 @@
+import sys
+sys.stdin = open("4836-색칠하기.txt")
+T = int(input())
+for test_case in range(1, T + 1):
+    N = int(input())
+    arr = [[0] * 10 for _ in range(10)]
+    purple_count = 0
+    for _ in range(N):
+        r1, c1, r2, c2, color = map(int, input().split())
+
+        for r in range(r1, r2 + 1):
+            for c in range(c1, c2 + 1):
+                arr[r][c] += color
+
+    for r in range(10):
+        for c in range(10):
+            if arr[r][c] == 3:
+                purple_count += 1
+
+
+    print(f'#{test_case} {purple_count}')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # import sys
 
 # sys.stdin = open("4836-색칠하기.txt")
@@ -72,37 +127,37 @@
 #     print(f'#{t+1} {purple_count}')
 ###################################################################
 
-import sys
-
-sys.stdin = open("4836-색칠하기.txt")
-
-T = int(input())
-
-for test_case in range(1, T + 1):
-    # N은 색칠할 영역의 개수
-    N = int(input())
-
-    # 0으로 채워진 10 x 10 배열
-    arr = [[0] * 10 for _ in range(10)]
-
-    # 영역의 개수만큼 반복
-    for _ in range(N):
-        # 시작점 (r1, c1)과 (r2, c2)와 color에 값 할당
-        r1, c1, r2, c2, color = map(int, input().split())
-
-        # 색칠할 영역 내에서 완전탐색 하면서 색깔 숫자 더하기
-        for r in range(r1, r2 + 1): 
-            for c in range(c1, c2 + 1):
-                arr[r][c] += color
-
-    # 색깔 숫자가 3인 영역 찾기
-    purple_count = 0
-    for r in range(10):
-        for c in range(10):
-            if arr[r][c] == 3:
-                purple_count += 1
-
-    print(f'#{test_case} {purple_count}')
+# import sys
+#
+# sys.stdin = open("4836-색칠하기.txt")
+#
+# T = int(input())
+#
+# for test_case in range(1, T + 1):
+#     # N은 색칠할 영역의 개수
+#     N = int(input())
+#
+#     # 0으로 채워진 10 x 10 배열
+#     arr = [[0] * 10 for _ in range(10)]
+#
+#     # 영역의 개수만큼 반복
+#     for _ in range(N):
+#         # 시작점 (r1, c1)과 (r2, c2)와 color에 값 할당
+#         r1, c1, r2, c2, color = map(int, input().split())
+#
+#         # 색칠할 영역 내에서 완전탐색 하면서 색깔 숫자 더하기
+#         for r in range(r1, r2 + 1):
+#             for c in range(c1, c2 + 1):
+#                 arr[r][c] += color
+#
+#     # 색깔 숫자가 3인 영역 찾기
+#     purple_count = 0
+#     for r in range(10):
+#         for c in range(10):
+#             if arr[r][c] == 3:
+#                 purple_count += 1
+#
+#     print(f'#{test_case} {purple_count}')
 
 # 정답 예시
 #1 4

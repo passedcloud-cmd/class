@@ -12,6 +12,46 @@ for test_case in range(1, T + 1):
     # 충전기가 있는 정류장 번호
     chargers = list(map(int, input().split()))
 
+    position_now = 0
+    charge_count = 0
+
+    # 최대 멀리까지 간 후 되돌아오면서 정류장 있는지 체크
+    while position_now + K < N:
+        for i in range(position_now + K, position_now, -1):
+            if i in chargers:
+                position_now = i
+                charge_count += 1
+                break # for i
+        # for문을 다 돌았다는 건 충전기가 있는 정류소를 못 찾았다는 뜻
+        else:
+            charge_count = 0
+            break # for while
+
+    print(f'#{test_case} {charge_count}')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # # 방법 1:최대치로 전진 후 뒤로 돌아보며 충전소를 찾기. 방법 3와 비슷한 느낌
 #     # 모든 정류장 정보를 담을 리스트 생성. 충전소 위치는 1
 #     stations = [0] * (N + 1)
