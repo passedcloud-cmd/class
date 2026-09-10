@@ -9,12 +9,28 @@ for test_case in range(1, T + 1):
     # 먼저 arr을 순서대로 정렬
     # 버블 소트
     for i in range(0, len(arr) - 1):
-        for j in range
-            if arr[i] < arr[i + 1]:
+        for j in range (0, len(arr) -1 -i):
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
 
-    print(arr)
+    # 짝수 번째에는 뒤에서부터 값 추가
+    # 홀수 번째에는 앞에서부터 값 추가
+    arr_result = []
+    e = 0
+    o = - 1
+    for i in range(10):
+        # 짝수
+        if i % 2 == 0:
+            e -= 1
+            arr_result.append(arr[e])
+        # 홀수
+        else:
+            o += 1
+            arr_result.append((arr[o]))
 
-
+    # 리스트 밖으로 꺼내기
+    result = " ".join(map(str, arr_result))
+    print(f'#{test_case} {result}')
 
 
 
