@@ -128,7 +128,7 @@ print(f'{result:.2f}도') # 57.79
 ball_diameter = 10
 def to_ssafy_angle(delta_x, delta_y):
     """좌표 차이를 알면 일타싸피 각도로 변환"""
-    return math.degrees(math.atan2(delta_x, delta_y) % 360)
+    return math.degrees(math.atan2(delta_x, delta_y)) % 360
 
 def aim_at(white_ball, target_ball, hole):
     """수구로 목적구를 쳐서 hole에 넣기 위한 (각도, 세기, 접점)을 반환"""
