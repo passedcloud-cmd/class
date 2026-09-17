@@ -94,4 +94,32 @@ def preorder(node):
 
 preorder(1)
 
+# 중위 순회(Inorder Traversal)
+def inorder(node):
+    if node == 0:
+        return
 
+    # 1. 왼쪽 자식으로 이동
+    inorder(left[node])
+    # 2. 돌아와서 나 처리
+    print(node, end=' ')
+    # 3. 오른쪽 자식 이동
+    inorder(right[node])
+
+print('\n중위 순회')
+inorder(1)
+
+# 후위 순회(Postorder Traversal)
+def postorder(node):
+    if node == 0:
+        return
+
+    # 1. 왼쪽 자식으로 이동
+    postorder(left[node])
+    # 2. 오른쪽 자식으로 이동
+    postorder(right[node])
+    # 3. 나 처리
+    print(node, end=' ')
+
+print('\n후위 순회')
+postorder(1)
