@@ -212,3 +212,74 @@ def dfs_stack_push_style(start_node):
     return path
 result = ''.join(map(str, dfs_stack_push_style(1)))
 print(f'인접 리스트 + 스택 - push 시점 방문 처리\n{result}')
+
+
+
+
+print('\n연습')
+
+
+V, E = 7, 8
+input = "1 2 1 3 2 4 2 5 4 6 5 6 6 7 3 7"
+data = list(map(int, input.split()))
+
+adj_list = [[] for _ in range(V+1)]
+for i in range(E):
+    node1, node2 = data[i*2], data[i*2+1]
+    adj_list[node1].append(node2)
+    adj_list[node2].append(node1)
+
+def list_pop_dfs(start):
+    visited = [False] * (V+1)
+    path = []
+    stack = []
+    stack.append(start)
+
+    while stack:
+        current_node = stack.pop()
+        if not visited[current_node]:
+            visited[current_node] = True
+            path.append(current_node)
+
+        for next_node in adj_list[current_node]:
+            if not visited[next_node]:
+                stack.append(next_node)
+
+    return path
+
+result = list_pop_dfs(1)
+print(f'pop{result}')    
+
+
+
+
+V, E = 7, 8
+input = "1 2 1 3 2 4 2 5 4 6 5 6 6 7 3 7"
+data = list(map(int, input.split()))
+
+adj_list = [[] for _ in range(V+1)]
+for i in range(E):
+    node1, node2 = data[i*2], data[i*2+1]
+    adj_list[node1].append(node2)
+    adj_list[node2].append(node1)
+
+def list_push_dfs(start):
+    visited = [False] * (V+1)
+    path = []
+    stack = []
+    stack.append(start)
+    visited[start] = True
+
+    while stack:
+        current_node = stack.pop()
+        path.append(current_node)
+
+        for next_node in adj_list[current_node]:
+            if not visited[next_node]:
+                visited[next_node] = True
+                stack.append(next_node)
+
+    return path
+
+result = list_push_dfs(1)
+print(f'push{result}')
