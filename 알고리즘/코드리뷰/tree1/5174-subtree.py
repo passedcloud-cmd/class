@@ -1,7 +1,49 @@
+# import sys
+# sys.stdin = open('5174-subtree.txt')
+
+# T = int(input())
+# for test_case in range(1, T+1):
+#     # 간선의 개수 E, 서브 트리의 노드 N
+#     E, N = map(int, input().split())
+#     V = E+1
+#     edge = list(map(int, input().split()))
+
+#     child1 = [0] * (V+1)
+#     child2 = [0] * (V+1)
+
+#     for i in range(E):
+#         parent = edge[i*2]
+#         child = edge[i*2+1]
+
+#         if child1[parent] == 0:
+#             child1[parent] = child
+#         else:
+#             child2[parent] = child
+
+#     # 자식 노드 확인 출력
+#     # print(f'child1:{child1}')
+#     # print(f'child2:{child2}')
+
+#     cnt = 0
+#     # 전위순회
+#     def preorder(node):
+#         global cnt
+#         if node != 0:
+#             # print(node, end = ' ')
+#             cnt +=1
+#             preorder(child1[node])
+#             preorder(child2[node])
+#         return cnt
+    
+#     preorder(N)
+#     print(f'#{test_case} {cnt}')
+
+
+
+
+
 import sys
 sys.stdin = open('5174-subtree.txt')
-
-
 
 def postorder(T):
     if T == 0:

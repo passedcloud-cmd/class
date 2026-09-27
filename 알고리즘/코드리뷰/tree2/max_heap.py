@@ -30,7 +30,7 @@ def deq():
             break               # 비교 중단,
     return tmp
 
-heap = [0] * 100
+heap = [0] * 10
 last = 0
 
 enq(2)
@@ -39,5 +39,7 @@ enq(7)
 enq(3)
 enq(4)
 enq(6)
+
 while last:
     print(deq())
+    print(heap[1:last+1])

@@ -1,0 +1,54 @@
+
+1989_초심자의_회문검사
+4861_회문
+9367_점점 커지는 당근의 개수
+27816_섬 찾기
+01_순회
+⭐stack1 연습문제 3
+⭐queue BFS 예제 3
+
+
+시험 유의 사항
+⚠️ 단답형은 문제에서 요구한 형식으로 작성해주세요.
+특히 대소문자, 특수문자(*, _)에 유의해주세요.
+서술형의 경우 30자 이상으로 작성해주세요.
+적어도 교재의 예시 코드는 반드시 실습하길 바랍니다.
+bootstrap에서 많이 사용하는 클래스도 정리해주세요. (ex: m-5, col-5)
+[5회차 과목평가] 
+문제토픽
+Flex 교차축 정렬
+Box Model 너비 계산
+자손·자식 선택자
+box-sizing별 요소 너비
+content-box 너비 계산
+position: absolute와 문서 흐름
+inline과 block 요소
+position: fixed
+Flex 주축 정렬
+Bootstrap Grid gutter
+Reset CSS
+CSS 상속 속성
+HTML5 시맨틱 태그
+Bootstrap 반응형 Grid
+Bootstrap 버튼
+Bootstrap Spacing
+Bootstrap Grid 컬럼 배치
+요소 숨기기
+content-box 구성 요소
+CSS 캐스케이드
+flex-grow 공간 분배
+z-index와 position
+position 기준점
+CSS 상대 단위
+position 속성 값
+CSS 선택자 우선순위
+Flex 여러 줄 정렬
+시맨틱 태그와 검색 엔진
+CSS 방법론
+Flex 개별 아이템 정렬
+Flex 주축과 교차축
+CSS 명시도
+
+
+
+

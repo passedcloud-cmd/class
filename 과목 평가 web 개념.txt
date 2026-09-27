@@ -1,0 +1,163 @@
+CSS 캐스케이드
+CSS 상대 단위
+CSS 선택자 우선순위
+CSS 명시도
+CSS 상속 속성
+자손·자식 선택자
+Box Model 너비 계산
+box-sizing별 요소 너비
+content-box 너비 계산
+content-box 구성 요소
+요소 숨기기
+
+
+<!DOCTYPE himl> : 해당 문서가 html문서
+<html></html>: 전체 페이지의 콘텐츠
+<head></head>: 설명, 설정 등 메타데이터 작성. 사용자 눈에 안보임
+<title></title>: 탭, 즐겨찾기 제목
+<body></body>: html문서 내용. 문서 하나에 하나의 body만 존재
+<p></p>: 문단
+<a></a>: 다른 페이지로 이동시키는 하이퍼링크
+
+html element(요소) = opening tag + 내용 + closing tag
+html attribute(속성) : 여러 속성이 있으면 공백으로 구분.
+태그 사용: 스크린 리더와 검색엔진 최적화(SEO)의 기본
+
+inline과 block 요소
+block: 혼자 한 줄을 통째로 차지해요. 다음 요소는 아래 줄로 내려가요. width, height, margin, padding이 모두 적용돼요. 예: div, p, h1, ul, li
+inline: 글자처럼 옆으로 나란히 붙어요. width, height가 적용되지 않고, 위아래 margin도 적용되지 않아요. 예: span, a, strong
+inline-block: 옆으로 나란히 서면서 크기 지정도 가능한 중간 형태예요.
+
+CSS 적용 방법
+1. 인라인 스타일 / 2. 내부 스타일 시트 / 3. 외부 스타일 시트
+
+CSS selectors : HTML 요소를 선택하여 스타일을 적용할 수 있도록하는 선택자
+CSS 결합자 : 자식 결합자(">") 와 자손 결합자(" ")
+CSS 상속되는 속성은 text관련 요소
+명시도: 요소에 적용할 CSS 선언을 결정하기 위한 알고리즘. 선택자들의 우선순위
+
+CSS 선택자 우선순위 / CSS 명시도
+여러 스타일이 부딪히면 "더 구체적인" 쪽이 이겨요.
+강한 순서대로:
+1. !important
+2. 인라인 스타일 (style="...")
+3. id 선택자 #box
+4. class 선택자 .box, 속성 선택자, 가상 클래스 :hover
+5. 태그 선택자 p, div
+6. 전체 선택자 *
+
+CSS 캐스케이드: 우선순위가 같으면 나중에 선언된 규칙이 적용
+CSS 선언: 선택된 요소에 적용할 스타일을 구체적으로 명시
+CSS 상대 단위 em, rem(1rem = 16px), %
+
+CSS 방법론: CSS 클래스 이름을 체계적으로 짓는 규칙
+대표적인 것은 BEM으로, 블록__요소--상태 형태로 써요.
+예: card__title--active. 그 외에 OOCSS, SMACSS 등이 있어요.
+
+요소 숨기기
+display: none → 요소가 자리까지 완전히 사라져요.
+visibility: hidden → 안 보이지만 자리는 그대로 남아요. (투명인간 느낌)
+
+CSS box Model: 웹페이지의 모든 HTML 요소를 감싸는 사각형 상자 모델. 요소의 크기, 배치, 간격을 결정하는 규칙
+content(내용) → padding(안쪽 여백) → border(테두리) → margin(바깥 여백)
+content-box(기본값): width가 내용 부분만 의미
+border_box: width: width가 내용 + padding + border 전부를 의미
+
+width: 100px; padding: 10px; border: 5px; 이라면
+content-box: 100 + (10×2) + (5×2) = 130px
+border-box: 그냥 100px (대신 내용 부분이 70px로 줄어들어요)
+
+
+=======================================
+inline과 block 요소
+z-index와 position
+position 기준점
+position 속성 값
+position: fixed
+position: absolute와 문서 흐름
+flex-grow 공간 분배
+Flex 주축 정렬
+Flex 교차축 정렬
+Flex 여러 줄 정렬
+Flex 개별 아이템 정렬
+Flex 주축과 교차축
+박스 타입에 따라 박스 동작 방식이 달라짐
+박스 타입 종류 : 1. Block 타입 / 2. Inline 타입
+
+CSS position: 요소를 Normal Flow에서 제거하여 다른 위치로 배치
+postion유형: 1. static / 2. relative / 3. absolute / 4. fixed / 5. sticky
+position 속성 값과 기준점
+static: 기본값. top/left 같은 좌표가 무시돼요.
+relative: 자기 원래 위치 기준으로 이동. 원래 자리는 비워둔 채로 남아요.
+absolute: static이 아닌 가장 가까운 조상 기준. 그런 조상이 없으면 문서 전체(body) 기준. 그래서 보통 부모에 relative를 줘요.
+fixed: 브라우저 화면 기준. 스크롤해도 그 자리에 고정돼요. (예: 상단 고정 메뉴, 채팅 버튼)
+sticky: 평소엔 제자리에 있다가 스크롤하면 특정 위치에 달라붙어요.
+
+z-index :position이 static이 아닌 요소에만 작동
+
+CSS Flexboxs: inner display타입. 박스 내부의 요소들이 어떻게 배치될지 결정.
+Flex 주축과 교차축
+부모에 display: flex를 주면 자식들이 정렬돼요.
+주축: 아이템이 나열되는 방향. 기본(flex-direction: row)은 가로
+교차축: 주축과 수직인 방향. 기본은 세로
+
+정렬 속성 4총사
+Flex 주축 정렬 → justify-content (flex-start, center, flex-end, space-between, space-around, space-evenly)
+Flex 교차축 정렬 → align-items (기본값 stretch, center, flex-start, flex-end 등)
+Flex 여러 줄 정렬 → align-content. 아이템이 여러 줄일 때 줄 전체를 정렬해요. flex-wrap: wrap이 있어야 효과가 있어요.
+Flex 개별 아이템 정렬 → align-self. 부모가 아닌 아이템 하나에 직접 줘서 그것만 따로 정렬해요.
+
+flex-grow 공간 분배
+남는 빈 공간을 비율대로 나눠 갖는 속성이에요. 기본값은 0(안 늘어남). A에 flex-grow: 1, B에 flex-grow: 2면 남는 공간을 1:2로 나눠 가져요. (전체 크기가 1:2가 되는 게 아니라 남는 공간만 나누는 것이라는 점 주의!)
+
+개념 문제
+2. 블록박스는 자동으로 줄바꿈이 되며, 기본적으로 너비가 부모 요소를 채운다
+12. 마진 상쇄는 일반적인 문서 흐름에 있는 블록 레벨 요소의 상하 마진에서만 발생함. Float, Absolute, Flex, Grid 등 인라인 요소에서는 달생하지 않음.
+
+
+=====================================
+Reset CSS
+CSS 방법론
+Bootstrap 버튼
+Bootstrap Spacing
+HTML5 시맨틱 태그
+시맨틱 태그와 검색 엔진
+
+HTML5 시맨틱 태그: 의미가 있는 태그
+header(머리말), nav(메뉴), main(본문), article(독립된 글), section(구역), aside(사이드), footer(바닥글)
+
+Bootstrap Grid 컬럼 배치
+화면 가로를 12칸으로 나눠요. 구조는 container > row > col 순서예요.
+col-6 = 12칸 중 6칸 (절반)
+col-4 세 개 = 한 줄에 3개
+offset-3 = 왼쪽을 3칸 비우고 시작
+
+Bootstrap Grid gutter
+컬럼 사이의 간격이에요. g-0(간격 없음)부터 g-5까지 쓰고, gx-는 가로 간격, gy-는 세로 간격이에요.
+
+Bootstrap 버튼
+class="btn btn-primary" 처럼 btn + 색상 두 개를 함께 써요.
+색상: primary(파랑), secondary(회색), success(초록), danger(빨강), warning(노랑), info, light, dark
+테두리만 있는 버튼은 btn-outline-primary, 크기는 btn-lg / btn-sm이에요.
+
+Bootstrap Spacing
+margin과 padding을 클래스로 주는 규칙이에요. [무엇][어디]-[크기] 형태로 읽으면 쉬워요.
+
+무엇: m(margin), p(padding)
+어디: t(위), b(아래), s(왼쪽), e(오른쪽), x(좌우), y(위아래), 생략하면 전체
+크기: 0~5, auto
+예: mt-3 = 위쪽 margin 3단계, px-2 = 좌우 padding 2단계, mx-auto = 가운데 정렬
+
+개념 문제
+5. .btn은 bootstrap에서 버튼을 생성할 때 사용하는 기본 클래스
+6. <section>은 문서의 구획을 명확히 나타내는 의미있는 시멘틱 태그
+10. <div>는 의미 없이 시각적인 구조만 제공. 시멘틱 구조가 도입되기 전 레이아웃 구성에 많이 사용되었음
+
+=========================================
+Bootstrap Grid gutter
+Bootstrap 반응형 Grid
+Bootstrap Grid 컬럼 배치
+
+
+
+
