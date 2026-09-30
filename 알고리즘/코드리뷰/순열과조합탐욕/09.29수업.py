@@ -172,17 +172,17 @@ def abc5(level):
 
 ## 수정할 것
 # 합이 10 이상인 경우는 몇 가지
-arr8 = [3,4,5,1,6]
+arr8 = [3,4,7,1,6]
 cnt = 0
 Sum = 0
 def abc8(level):
     global cnt, Sum
 
-    if Sum>10: # 가지치기
-        return
+    # if Sum>10: # 가지치기
+    #     return
     
     if level ==3:
-        if Sum > 10:
+        if Sum >= 10:
             cnt +=1
         return
 
@@ -191,5 +191,5 @@ def abc8(level):
         abc8(level+1)
         Sum-=arr8[i]
 
-abc8(6)
+abc8(8)
 print(cnt)
